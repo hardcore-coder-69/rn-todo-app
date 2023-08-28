@@ -1,4 +1,4 @@
-export const FETCH_TODOS = 'FETCH_TODOS';
+export const TODOS_FETCHED = 'TODOS_FETCHED';
 export const TODOS_SAVED = 'TODOS_SAVED';
 
 export const fetchTodos = () => {

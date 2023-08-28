@@ -1,4 +1,4 @@
-import { TODOS_FETCHED, SAVE_TODOS } from "../actions/todos";
+import { TODOS_FETCHED, TODOS_SAVED } from "../actions/todos";
 
 const initialState = {
     isLoading: false,
