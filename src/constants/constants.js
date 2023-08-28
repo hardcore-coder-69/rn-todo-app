@@ -16,7 +16,7 @@ export const COMMON = {
         textColor: '#fff',
         headerBackground: '#230180',
         greyColor: 'grey',
-        statusBarColor: 'grey',
+        statusBarColor: '#000',
         taskBackgroundColor: '#282828',
         createdAtColor: 'grey',
         danger: '#cf0202',
