@@ -14,13 +14,13 @@ export default Header = () => {
     return (
         <View style={styles.container}>
             <View>
-                <Text style={[{ color: ThemeColors.textColor }, styles.heading]}>TO DO</Text>
+                <Text style={[{ color: ThemeColors.textColor }, styles.heading]}>YOUR TASKS</Text>
                 <View style={styles.copyright}>
                     <Image source={require('../../assets/icon.png')} style={styles.logoImage} />
-                    <Text style={[{ color: ThemeColors.textColor }]}>hardcore coder</Text>
+                    <Text style={[{ color: ThemeColors.textColor }, styles.copyrightText]}>hardcore coder</Text>
                 </View>
             </View>
-            <TouchableOpacity onPress={() => dispatch(toggleTheme())}>
+            <TouchableOpacity onPress={() => dispatch(toggleTheme({ isDark: !isDark }))}>
                 {
                     isDark ?
                         <MaterialIcons name="toggle-on" size={62} color={ThemeColors.textColor} /> :
@@ -48,12 +48,14 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
-        opacity: 0.7
+        opacity: 0.5
     },
     logoImage: {
-        height: 20,
-        width: 20,
-        marginRight: 5
+        height: 15,
+        width: 15,
+        marginRight: 5,
+    },
+    copyrightText: {
+        fontSize: 12
     }
 })

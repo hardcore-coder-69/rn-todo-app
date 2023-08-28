@@ -4,11 +4,13 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 
 import common from './src/store/reducers/common';
+import todos from './src/store/reducers/todos';
 import Main from './src/Main';
 
 // Combine reducers
 const rootReducer = combineReducers({
-  common: common
+  common: common,
+  todos: todos
 });
 
 const store = legacy_createStore(rootReducer, applyMiddleware(thunk));

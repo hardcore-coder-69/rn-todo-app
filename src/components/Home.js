@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View, TextInput, StyleSheet, ScrollView, TouchableOpacity, Alert } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from "react-redux";
 
 import { getThemeColors } from "../utils/Helper";
 import { toggleModal } from "../store/actions/common";
+import { fetchTodos, saveTodos } from "../store/actions/todos";
 
 export default Home = () => {
+    let taskList = useSelector(state => state.todos.todos);
     const dispatch = useDispatch();
     let [task, setTask] = useState('');
-    let [taskList, setTaskList] = useState([]);
-    
     const ThemeColors = getThemeColors();
+
+    useEffect(() => {
+        dispatch(fetchTodos());
+    }, [dispatch]);
 
     function addTaskHandler() {
         if (task === '') return;
@@ -26,8 +30,8 @@ export default Home = () => {
             createdAt: time
         }
         taskList.unshift(obj);
-        setTaskList(taskList);
         setTask('');
+        dispatch(saveTodos(taskList));
     }
 
 
@@ -48,7 +52,7 @@ export default Home = () => {
     function deleteTaskConfirmed(confirmParameters) {
         let id = confirmParameters.taskId;
         taskList = taskList.filter(item => item.id != id);
-        setTaskList(taskList);
+        dispatch(saveTodos(taskList));
         dispatch(toggleModal());
     }
 
@@ -59,7 +63,7 @@ export default Home = () => {
             }
             return task;
         });
-        setTaskList(taskList);
+        dispatch(saveTodos(taskList));
     }
 
     return (
@@ -104,7 +108,8 @@ const styles = StyleSheet.create({
     input: {
         fontSize: 20,
         borderWidth: 1,
-        padding: 10,
+        paddingHorizontal: 10,
+        paddingVertical: 15,
         borderRadius: 5,
         marginBottom: 10
     },

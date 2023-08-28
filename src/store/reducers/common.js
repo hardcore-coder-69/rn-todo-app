@@ -1,7 +1,7 @@
 import { TOGGLE_THEME, TOGGLE_MODAL } from "../actions/common";
 
 const initialState = {
-    isDark: false,   // Fetch from database in action
+    isDark: false,
     modal: {
         isVisible: false,
         title: null,
@@ -18,7 +18,7 @@ export default (state = initialState, action) => {
         case TOGGLE_THEME:
             return {
                 ...state,
-                isDark: !state.isDark
+                isDark: action.payload
             };
         case TOGGLE_MODAL: {
             const payload = action.payload;

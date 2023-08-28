@@ -1,10 +1,7 @@
 import { TODOS_FETCHED, TODOS_SAVED } from "../actions/todos";
 
 const initialState = {
-    isLoading: false,
-    todos: [],
-    savedNotification: false,
-    deleteNotification: false,
+    todos: []
 };
 
 export default (state = initialState, action) => {
@@ -16,7 +13,8 @@ export default (state = initialState, action) => {
             };
         case TODOS_SAVED: {
             return {
-                ...state
+                ...state,
+                todos: action.payload
             }
         }
         default:
