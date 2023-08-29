@@ -51,9 +51,8 @@ const styles = StyleSheet.create({
         opacity: 0.5
     },
     logoImage: {
-        height: 15,
-        width: 15,
-        marginRight: 5,
+        height: 25,
+        width: 25,
     },
     copyrightText: {
         fontSize: 12

@@ -21,7 +21,7 @@ export default function Main() {
         <View style={[{ backgroundColor: ThemeColors.backgroundColor }, styles.container]}>
             <Header />
             <Home />
-            <StatusBar barStyle="light-content" backgroundColor={ThemeColors.statusBarColor} />
+            <StatusBar style={ThemeColors.statusBarTheme} />
             <CustomModal />
         </View>
     );
