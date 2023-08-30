@@ -24,7 +24,7 @@ export default CustomModal = () => {
         <Modal
             isVisible={modal.isVisible}
             backdropColor={ThemeColors.textColor}
-            backdropOpacity={0.4}
+            backdropOpacity={.3}
             animationIn="slideInDown"
             animationInTiming={300}
         >
@@ -33,10 +33,10 @@ export default CustomModal = () => {
                 <Text style={[{ color: ThemeColors.textColor }, styles.modalText]}>{modal.message}</Text>
 
                 <View style={styles.action}>
-                    <TouchableOpacity onPress={() => cancel()} style={[{ backgroundColor: ThemeColors.greyColor }, styles.modalButton]}>
+                    <TouchableOpacity activeOpacity={0.5}  onPress={() => cancel()} style={[{ backgroundColor: ThemeColors.greyColor }, styles.modalButton]}>
                         <Text style={styles.modalButtonText}>{modal.cancelLabel}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => confirmHandlerFunction(modal.confirmParameters)} style={[{ backgroundColor: ThemeColors.button }, styles.modalButton]}>
+                    <TouchableOpacity activeOpacity={0.5}  onPress={() => confirmHandlerFunction(modal.confirmParameters)} style={[{ backgroundColor: ThemeColors.danger }, styles.modalButton]}>
                         <Text style={styles.modalButtonText}>{modal.confirmLabel}</Text>
                     </TouchableOpacity>
                 </View>

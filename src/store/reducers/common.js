@@ -1,7 +1,8 @@
-import { TOGGLE_THEME, TOGGLE_MODAL } from "../actions/common";
+import { TOGGLE_THEME, TOGGLE_MODAL, SWITCH_TAB } from "../actions/common";
 
 const initialState = {
     isDark: false,
+    selectedTab: 'tasks',
     modal: {
         isVisible: false,
         title: null,
@@ -20,7 +21,7 @@ export default (state = initialState, action) => {
                 ...state,
                 isDark: action.payload
             };
-        case TOGGLE_MODAL: {
+        case TOGGLE_MODAL:
             const payload = action.payload;
             return {
                 ...state,
@@ -35,7 +36,11 @@ export default (state = initialState, action) => {
                     confirmLabel: payload && payload.confirmLabel ? payload.confirmLabel : 'Done'
                 }
             }
-        }
+        case SWITCH_TAB:
+            return {
+                ...state,
+                selectedTab: action.payload
+            }
         default:
             return state
     }

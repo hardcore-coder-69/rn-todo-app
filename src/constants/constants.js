@@ -4,22 +4,30 @@ export const COMMON = {
         backgroundColor: '#fff',
         textColor: '#000',
         headerBackground: '#32ADF9',
-        greyColor: 'lightgrey',
+        greyColor: 'grey',
         statusBarTheme: 'auto',
         taskBackgroundColor: '#ebeded',
+        tabBackgroundColor: '#e6e6e6',
         createdAtColor: 'grey',
         danger: '#fa3434',
-        button: '#32ADF9'
+        disabledButon: 'grey',
+        enabledButton: 'green',
+        borderColor: 'lightgrey',
+        inputBackgroundColor: '#ebeded'
     },
     dark: {
         backgroundColor: '#000',
-        textColor: '#fff',
+        textColor: 'lightgrey',
         headerBackground: '#230180',
         greyColor: 'grey',
         statusBarTheme: 'light',
         taskBackgroundColor: '#282828',
+        tabBackgroundColor: '#525151',
         createdAtColor: 'grey',
         danger: '#cf0202',
-        button: '#32ADF9'
+        disabledButon: 'grey',
+        enabledButton: 'green',
+        borderColor: '#404040',
+        inputBackgroundColor: '#282828'
     }
 }
