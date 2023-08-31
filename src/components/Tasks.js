@@ -93,7 +93,7 @@ export default Tasks = () => {
                             <Text style={[{ color: ThemeColors.createdAtColor }, styles.createdAt]}>{task.createdAt}</Text>
                         </View>
                         <TouchableOpacity activeOpacity={0.5}  style={styles.deleteButton} onPress={() => deleteTask(task.id)}>
-                            <MaterialIcons name="delete" size={48} color={ThemeColors.danger} />
+                            <MaterialIcons name="delete" size={36} color={ThemeColors.textColor} />
                         </TouchableOpacity>
                     </TouchableOpacity>
                 ))
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     taskTextContainer: {
-        width: '85.5%',
+        width: '89%',
         paddingLeft: 10,
         paddingTop: 10,
         paddingBottom: 10

@@ -10,7 +10,7 @@ export const COMMON = {
         tabBackgroundColor: '#e6e6e6',
         createdAtColor: 'grey',
         danger: '#fa3434',
-        disabledButon: 'grey',
+        disabledButon: '#C0C0C0',
         enabledButton: 'green',
         borderColor: 'lightgrey',
         inputBackgroundColor: '#ebeded'
@@ -25,7 +25,7 @@ export const COMMON = {
         tabBackgroundColor: '#525151',
         createdAtColor: 'grey',
         danger: '#cf0202',
-        disabledButon: 'grey',
+        disabledButon: '#555555',
         enabledButton: 'green',
         borderColor: '#404040',
         inputBackgroundColor: '#282828'

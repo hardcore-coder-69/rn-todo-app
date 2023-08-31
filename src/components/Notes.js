@@ -60,6 +60,8 @@ export default Notes = () => {
                 value={note}
                 style={[{ borderColor: ThemeColors.backgroundColor, color: ThemeColors.textColor, backgroundColor: ThemeColors.inputBackgroundColor }, styles.input]}
                 placeholder="Start typing..."
+                multiline
+                numberOfLines={4}
                 placeholderTextColor={ThemeColors.greyColor}
                 onChangeText={(value) => setNote(value)}
             />
@@ -81,7 +83,7 @@ export default Notes = () => {
                             <Text style={[{ color: ThemeColors.createdAtColor }, styles.createdAt]}>{note.createdAt}</Text>
                         </View>
                         <TouchableOpacity activeOpacity={0.5} style={styles.deleteButton} onPress={() => deleteNote(note.id)}>
-                            <MaterialIcons name="delete" size={48} color={ThemeColors.danger} />
+                            <MaterialIcons name="delete" size={36} color={ThemeColors.textColor} />
                         </TouchableOpacity>
                     </TouchableOpacity>
                 ))
@@ -97,7 +99,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 15,
         borderRadius: 5,
-        marginBottom: 10
+        marginBottom: 10,
+        textAlignVertical: 'top',
     },
     button: {
         alignItems: "center",
@@ -113,19 +116,19 @@ const styles = StyleSheet.create({
         borderWidth: 1
     },
     deleteButton: {
-        padding: 5
+        padding: 5,
     },
     taskStyle: {
         paddingVertical: 5,
         marginTop: 10,
         borderRadius: 5,
         display: 'flex',
-        alignItems: "center",
+        // alignItems: "center",
         justifyContent: 'start',
         flexDirection: 'row',
     },
     taskTextContainer: {
-        width: '85.5%',
+        width: '89%',
         paddingLeft: 10,
         paddingTop: 10,
         paddingBottom: 10

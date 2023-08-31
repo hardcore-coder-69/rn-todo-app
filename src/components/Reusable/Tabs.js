@@ -15,16 +15,11 @@ export default Tabs = ({ options }) => {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={[{borderColor: ThemeColors.tabBackgroundColor}, styles.container]}>
             {options.map(tab => (
-                <Pressable key={tab.key} onPress={() => changeTab(tab.key)}
-                    style={[
-                        {
-                            borderColor: ThemeColors.borderColor,
-                            backgroundColor: tab.key == selectedTab ? ThemeColors.tabBackgroundColor : null
-                        },
-                        styles.pressable
-                    ]}
+                <Pressable
+                    key={tab.key} onPress={() => changeTab(tab.key)}
+                    style={[{ backgroundColor: tab.key == selectedTab ? ThemeColors.tabBackgroundColor : null }, styles.pressable]}
                 >
                     <Text style={[{ color: ThemeColors.textColor }, styles.tabLabel]}>{tab.text}</Text>
                 </Pressable>
@@ -39,13 +34,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        borderWidth: 1,
+        borderRadius: 6
     },
     pressable: {
-        borderWidth: 1,
+        width: '50%',
         borderRadius: 5,
-        paddingVertical: 5,
+        paddingVertical: 10,
         paddingHorizontal: 10
     },
     tabLabel: {
+        fontSize: 18,
+        textAlign: 'center'
     }
 })
