@@ -1,10 +1,12 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import Modal from 'react-native-modal';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleModal } from '../../store/actions/common';
 import { getThemeColors } from '../../utils/Helper';
 
+const screenHeight = Dimensions.get('window').height;
 export default CustomModal = () => {
     let modal = useSelector(state => state.common.modal);
     const dispatch = useDispatch();
@@ -12,6 +14,7 @@ export default CustomModal = () => {
 
     function confirm(data = null) {
         console.log('Confirmation method not provided. Data:', data);
+        dispatch(toggleModal());
     }
 
     function cancel() {
@@ -29,16 +32,28 @@ export default CustomModal = () => {
             animationInTiming={300}
         >
             <View style={[{ backgroundColor: ThemeColors.taskBackgroundColor }, styles.modalContainer]}>
-                <Text style={[{ color: ThemeColors.textColor }, styles.modalTitle]}>{modal.title}</Text>
-                <Text style={[{ color: ThemeColors.textColor }, styles.modalText]}>{modal.message}</Text>
+                <View style={styles.actionsHeader}>
+                    {<Text style={[{ color: ThemeColors.textColor }, styles.modalTitle]}>{modal.title}</Text>}
+                    <TouchableOpacity activeOpacity={0.5} onPress={() => cancel()} style={[]}>
+                        <MaterialCommunityIcons name="close" size={28} color={ThemeColors.textColor} />
+                    </TouchableOpacity>
+                </View>
+                <ScrollView style={{ maxHeight: screenHeight * 0.85 }}>
+                    <Text style={[{ color: ThemeColors.textColor }, styles.modalText]}>{modal.message}</Text>
+                </ScrollView>
 
                 <View style={styles.action}>
-                    <TouchableOpacity activeOpacity={0.5}  onPress={() => cancel()} style={[{ backgroundColor: ThemeColors.greyColor }, styles.modalButton]}>
-                        <Text style={styles.modalButtonText}>{modal.cancelLabel}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.5}  onPress={() => confirmHandlerFunction(modal.confirmParameters)} style={[{ backgroundColor: ThemeColors.danger }, styles.modalButton]}>
-                        <Text style={styles.modalButtonText}>{modal.confirmLabel}</Text>
-                    </TouchableOpacity>
+                    {
+                        !modal.noSaveHandler &&
+                        <TouchableOpacity activeOpacity={0.5} onPress={() => cancel()} style={[{}, styles.modalButton]}>
+                            <Text style={[{ color: ThemeColors.textColor }, styles.modalButtonText]}>{modal.cancelLabel}</Text>
+                        </TouchableOpacity>}
+                    {
+                        !modal.noSaveHandler &&
+                        <TouchableOpacity activeOpacity={0.5} onPress={() => confirmHandlerFunction(modal.confirmParameters)} style={[{}, styles.modalButton]}>
+                            <Text style={[{ color: ThemeColors.danger }, styles.modalButtonText]}>{modal.confirmLabel}</Text>
+                        </TouchableOpacity>
+                    }
                 </View>
             </View>
         </Modal>
@@ -59,29 +74,41 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     modalContainer: {
-        padding: 20,
+        paddingHorizontal: 20,
+        paddingTop: 20,
+        paddingBottom: 20,
         borderRadius: 10,
     },
     modalTitle: {
-        fontSize: 18,
+        fontSize: 22,
         fontWeight: 'bold',
         marginBottom: 10,
     },
     modalText: {
         marginBottom: 20,
+        fontSize: 18
     },
     modalButton: {
         padding: 10,
         borderRadius: 5,
+        // borderWidth: 1,
+        marginLeft: 10
     },
     modalButtonText: {
-        color: 'white',
         fontWeight: 'bold',
+        fontSize: 18
     },
     action: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-evenly'
+        justifyContent: 'flex-end'
+    },
+    actionsHeader: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        // paddingBottom: 20
     }
 });

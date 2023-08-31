@@ -11,6 +11,7 @@ export default ActionsModal = (props) => {
 
     const isVisible = props.isVisible;
     const id = props.id;
+    const completed = props.completed;
     const editHandler = props.editHandler;
     const markCompleteHandler = props.markCompleteHandler;
     const deleteHandler = props.deleteHandler;
@@ -33,23 +34,23 @@ export default ActionsModal = (props) => {
                 </View>
 
                 <View style={styles.action}>
-                    <TouchableOpacity activeOpacity={0.5} onPress={() => editHandler(id)} style={[{ backgroundColor: '#8B8000' }, styles.modalButton]}>
-                        <MaterialIcons name="edit" size={24} style={styles.modalButtonText} />
-                        <Text style={styles.modalButtonText}>Edit {selectedTab.slice(0, -1)}</Text>
+                    <TouchableOpacity activeOpacity={0.5} onPress={() => editHandler()} style={[styles.modalButton]}>
+                        <MaterialIcons name="edit" size={28} style={[{color: ThemeColors.textColor}, styles.modalButtonIcon]} />
+                        <Text style={[{color: ThemeColors.textColor}, styles.modalButtonText]}>Edit {selectedTab.slice(0, -1)}</Text>
                     </TouchableOpacity>
 
                     {
                         selectedTab == 'tasks' ?
-                            <TouchableOpacity activeOpacity={0.5} onPress={() => markCompleteHandler(id)} style={[{ backgroundColor: 'green' }, styles.modalButton]}>
-                                <MaterialIcons name="check" size={24} style={styles.modalButtonText} />
-                                <Text style={styles.modalButtonText}>Mark as completed</Text>
+                            <TouchableOpacity activeOpacity={0.5} onPress={() => markCompleteHandler(id)} style={[styles.modalButton]}>
+                                <MaterialIcons name="check" size={28} style={[{color: ThemeColors.textColor}, styles.modalButtonIcon]} />
+                                <Text style={[{color: ThemeColors.textColor}, styles.modalButtonText]}>Mark as { completed ? 'pending' : 'complete' }</Text>
                             </TouchableOpacity>
                             : null
                     }
 
-                    <TouchableOpacity activeOpacity={0.5} onPress={() => deleteHandler(id)} style={[{ backgroundColor: ThemeColors.danger }, styles.modalButton]}>
-                        <MaterialIcons name="delete" size={24} style={styles.modalButtonText} />
-                        <Text style={styles.modalButtonText}>Delete {selectedTab.slice(0, -1)}</Text>
+                    <TouchableOpacity activeOpacity={0.5} onPress={() => deleteHandler(id)} style={[styles.modalButton]}>
+                        <MaterialIcons name="delete" size={28} style={[{color: ThemeColors.textColor}, styles.modalButtonIcon]} />
+                        <Text style={[{color: ThemeColors.textColor}, styles.modalButtonText]}>Delete {selectedTab.slice(0, -1)}</Text>
                     </TouchableOpacity>
 
                 </View>
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     modalTitle: {
-        fontSize: 18,
+        fontSize: 22,
         fontWeight: 'bold',
         marginBottom: 10,
     },
@@ -89,9 +90,13 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     modalButtonText: {
-        color: '#fff',
         fontWeight: 'bold',
-        marginLeft: 5
+        marginLeft: 10,
+        fontSize: 18
+    },
+    modalButtonIcon: {
+        marginLeft: 5,
+        fontSize: 28
     },
     action: {
         display: 'flex',

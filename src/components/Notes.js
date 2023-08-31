@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import React, { useState, useEffect } from "react";
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from "react-redux";
@@ -7,15 +7,19 @@ import { getThemeColors } from "../utils/Helper";
 import { saveNotes, fetchNotes } from "../store/actions/notes";
 import { toggleModal } from "../store/actions/common";
 import ActionsModal from "./Reusable/ActionsModal";
+import EditModal from "./Reusable/EditModal";
 
+const screenHeight = Dimensions.get('window').height;
 export default Notes = () => {
-    let [note, setNote] = useState('');
     let notes = useSelector(state => state.notes.notes);
     const dispatch = useDispatch();
     const ThemeColors = getThemeColors();
 
+    let [note, setNote] = useState('');
     let [itemId, setItemId] = useState(null);
     let [isVisible, setIsVisible] = useState(false);
+    let [showEditModal, setShowEditModal] = useState(false);
+    let [itemText, setItemText] = useState(note);
 
     useEffect(() => {
         dispatch(fetchNotes());
@@ -30,7 +34,8 @@ export default Notes = () => {
         let obj = {
             id: Math.floor(Math.random() * 100000),
             text: note,
-            createdAt: time
+            createdAt: time,
+            updatedAt: time
         }
         notes.unshift(obj);
         setNote('');
@@ -39,9 +44,9 @@ export default Notes = () => {
 
     function deleteNote(id) {
         const modalData = {
-            title: 'Confirmation!',
+            title: 'Confirmation',
             message: 'This action will permanently delete your note!',
-            confirmLabel: 'Confirm',
+            confirmLabel: 'Delete',
             confirmHandler: deleteNoteConfirmed,
             confirmParameters: {
                 noteId: id
@@ -60,18 +65,48 @@ export default Notes = () => {
         setItemId(false);
     }
 
-    function editNote(id) {
-        console.log(id);
+    function editNote() {
+        setIsVisible(false);
+        setShowEditModal(true);
     }
 
-    function showActions(id) {
+    function showActions(id, text) {
         setItemId(id);
+        setItemText(text);
         setIsVisible(true);
     }
 
     function cancelHandler() {
         setItemId(null);
+        setItemText('');
         setIsVisible(false);
+        setShowEditModal(false);
+    }
+
+    function saveEditedNote(id, newText) {
+        let time = new Date();
+        time = time.toLocaleTimeString() + ' ' + time.toLocaleDateString();
+
+        notes = notes.map(item => {
+            if (item.id === id) {
+                item.text = newText;
+                item.updatedAt = time;
+                return item;
+            }
+            return item;
+        });
+        dispatch(saveNotes(notes));
+        setShowEditModal(false);
+    }
+
+    function showFullNote(note) {
+        const modalData = {
+            title: 'Note',
+            message: note,
+            cancelLabel: 'Close',
+            noSaveHandler: true
+        }
+        dispatch(toggleModal(modalData));
     }
 
     return (
@@ -79,7 +114,7 @@ export default Notes = () => {
             <TextInput
                 value={note}
                 style={[{ borderColor: ThemeColors.backgroundColor, color: ThemeColors.textColor, backgroundColor: ThemeColors.inputBackgroundColor }, styles.input]}
-                placeholder="Start typing..."
+                placeholder="Add new note..."
                 multiline
                 numberOfLines={4}
                 placeholderTextColor={ThemeColors.greyColor}
@@ -97,12 +132,17 @@ export default Notes = () => {
             }
             {
                 notes.map((note) => (
-                    <TouchableOpacity activeOpacity={0.5} key={note.id} style={[{ backgroundColor: ThemeColors.taskBackgroundColor }, styles.taskStyle]}>
+                    <TouchableOpacity
+                        activeOpacity={0.5}
+                        key={note.id}
+                        style={[{ backgroundColor: ThemeColors.taskBackgroundColor }, styles.taskStyle]}
+                        onPress={() => showFullNote(note.text)}
+                    >
                         <View style={[styles.taskTextContainer]}>
-                            <Text style={[{ color: ThemeColors.textColor }, styles.taskText]}>{note.text}</Text>
-                            <Text style={[{ color: ThemeColors.createdAtColor }, styles.createdAt]}>{note.createdAt}</Text>
+                            <Text style={[{ color: ThemeColors.textColor }, styles.taskText]} numberOfLines={6} ellipsizeMode="tail">{note.text}</Text>
+                            <Text style={[{ color: ThemeColors.createdAtColor }, styles.createdAt]}>{note.updatedAt}</Text>
                         </View>
-                        <TouchableOpacity activeOpacity={0.5} style={styles.deleteButton} onPress={() => showActions(note.id)}>
+                        <TouchableOpacity activeOpacity={0.5} style={styles.deleteButton} onPress={() => showActions(note.id, note.text)}>
                             <MaterialCommunityIcons name="dots-vertical" size={28} color={ThemeColors.textColor} />
                         </TouchableOpacity>
                     </TouchableOpacity>
@@ -111,9 +151,18 @@ export default Notes = () => {
             <ActionsModal
                 isVisible={isVisible}
                 id={itemId}
+                completed="false"
+                markCompleteHandler="null"
                 editHandler={editNote}
                 deleteHandler={deleteNote}
                 cancelHandler={cancelHandler}
+            />
+            <EditModal
+                isVisible={showEditModal}
+                id={itemId}
+                text={itemText}
+                cancelHandler={cancelHandler}
+                saveHandler={saveEditedNote}
             />
         </ScrollView>
     );
@@ -128,6 +177,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginBottom: 10,
         textAlignVertical: 'top',
+        maxHeight: screenHeight * .6
     },
     button: {
         alignItems: "center",
@@ -155,7 +205,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     taskTextContainer: {
-        width: '92%',
+        width: '90%',
         paddingLeft: 10,
         paddingTop: 10,
         paddingBottom: 10

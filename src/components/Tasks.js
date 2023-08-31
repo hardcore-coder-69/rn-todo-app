@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity, Dimensions } from "react-native";
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from "react-redux";
 
@@ -7,15 +7,20 @@ import { getThemeColors } from "../utils/Helper";
 import { fetchTodos, saveTodos } from "../store/actions/todos";
 import { toggleModal } from "../store/actions/common";
 import ActionsModal from "./Reusable/ActionsModal";
+import EditModal from "./Reusable/EditModal";
 
+const screenHeight = Dimensions.get('window').height;
 export default Tasks = () => {
     const dispatch = useDispatch();
     let taskList = useSelector(state => state.todos.todos);
     const ThemeColors = getThemeColors();
-    let [task, setTask] = useState('');
 
+    let [task, setTask] = useState('');
     let [itemId, setItemId] = useState(null);
+    let [completed, setCompleted] = useState(false);
+    let [itemText, setItemText] = useState(task);
     let [isVisible, setIsVisible] = useState(false);
+    let [showEditModal, setShowEditModal] = useState(false);
 
     useEffect(() => {
         dispatch(fetchTodos());
@@ -23,6 +28,16 @@ export default Tasks = () => {
 
     function addTaskHandler() {
         if (task === '') return;
+        if (task.length > 200) {
+            const modalData = {
+                title: 'Alert',
+                message: 'Tasks are limited to 200 characters. Try using the notes instead.',
+                cancelLabel: 'Close',
+                noSaveHandler: true
+            }
+            dispatch(toggleModal(modalData));
+            return
+        }
 
         let time = new Date();
         time = time.toLocaleTimeString() + ' ' + time.toLocaleDateString();
@@ -31,7 +46,8 @@ export default Tasks = () => {
             id: Math.floor(Math.random() * 100000),
             text: task,
             completed: false,
-            createdAt: time
+            createdAt: time,
+            updatedAt: time
         }
         taskList.unshift(obj);
         setTask('');
@@ -41,9 +57,9 @@ export default Tasks = () => {
 
     function deleteTask(id) {
         const modalData = {
-            title: 'Confirmation!',
+            title: 'Confirmation',
             message: 'This action will permanently delete the task!',
-            confirmLabel: 'Confirm',
+            confirmLabel: 'Delete',
             confirmHandler: deleteTaskConfirmed,
             confirmParameters: {
                 taskId: id
@@ -74,18 +90,40 @@ export default Tasks = () => {
         setIsVisible(false);
     }
 
-    function editTask(id) {
-        console.log(id);
+    function editTask() {
+        setIsVisible(false);
+        setShowEditModal(true);
     }
 
-    function showActions(id) {
+    function showActions(id, text, completed) {
         setItemId(id);
+        setCompleted(completed)
+        setItemText(text);
         setIsVisible(true);
     }
 
     function cancelHandler() {
         setItemId(null);
+        setItemText('');
         setIsVisible(false);
+        setShowEditModal(false);
+    }
+
+    function saveEditedTask(id, newText) {
+        let time = new Date();
+        time = time.toLocaleTimeString() + ' ' + time.toLocaleDateString();
+
+        taskList = taskList.map(item => {
+            if (item.id === id) {
+                item.text = newText;
+                item.completed = false;
+                item.updatedAt = time;
+                return item;
+            }
+            return item;
+        });
+        dispatch(saveTodos(taskList));
+        setShowEditModal(false);
     }
 
     return (
@@ -93,7 +131,8 @@ export default Tasks = () => {
             <TextInput
                 value={task}
                 style={[{ borderColor: ThemeColors.backgroundColor, color: ThemeColors.textColor, backgroundColor: ThemeColors.inputBackgroundColor }, styles.input]}
-                placeholder="Enter new task..."
+                multiline
+                placeholder="Add new task..."
                 placeholderTextColor={ThemeColors.greyColor}
                 onChangeText={(value) => setTask(value)}
             />
@@ -115,7 +154,7 @@ export default Tasks = () => {
                             <Text style={[{ color: ThemeColors.createdAtColor }, styles.createdAt]}>{task.createdAt}</Text>
                         </View>
 
-                        <TouchableOpacity activeOpacity={0.5} style={styles.deleteButton} onPress={() => showActions(task.id)}>
+                        <TouchableOpacity activeOpacity={0.5} style={styles.deleteButton} onPress={() => showActions(task.id, task.text, task.completed)}>
                             <MaterialCommunityIcons name="dots-vertical" size={28} color={ThemeColors.textColor} />
                         </TouchableOpacity>
                     </TouchableOpacity>
@@ -124,10 +163,18 @@ export default Tasks = () => {
             <ActionsModal
                 isVisible={isVisible}
                 id={itemId}
+                completed={completed}
                 editHandler={editTask}
                 markCompleteHandler={toggleCompleted}
                 deleteHandler={deleteTask}
                 cancelHandler={cancelHandler}
+            />
+            <EditModal
+                isVisible={showEditModal}
+                id={itemId}
+                text={itemText}
+                cancelHandler={cancelHandler}
+                saveHandler={saveEditedTask}
             />
         </ScrollView>
     );
@@ -140,7 +187,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 15,
         borderRadius: 5,
-        marginBottom: 10
+        marginBottom: 10,
+        textAlignVertical: 'top',
+        // minHeight: screenHeight / 12.9,
+        maxHeight: screenHeight / 7
     },
     button: {
         alignItems: "center",
@@ -159,12 +209,12 @@ const styles = StyleSheet.create({
         marginTop: 10,
         borderRadius: 5,
         display: 'flex',
-        alignItems: "center",
+        // alignItems: "center",
         justifyContent: 'start',
         flexDirection: 'row',
     },
     taskTextContainer: {
-        width: '92%',
+        width: '90%',
         paddingLeft: 10,
         paddingVertical: 10,
     },
