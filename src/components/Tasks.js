@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity } from "react-native";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from "react-redux";
 
 import { getThemeColors } from "../utils/Helper";
 import { fetchTodos, saveTodos } from "../store/actions/todos";
 import { toggleModal } from "../store/actions/common";
+import ActionsModal from "./Reusable/ActionsModal";
 
 export default Tasks = () => {
     const dispatch = useDispatch();
     let taskList = useSelector(state => state.todos.todos);
-    let [task, setTask] = useState('');
     const ThemeColors = getThemeColors();
+    let [task, setTask] = useState('');
+
+    let [itemId, setItemId] = useState(null);
+    let [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
         dispatch(fetchTodos());
@@ -47,6 +51,7 @@ export default Tasks = () => {
         }
 
         dispatch(toggleModal(modalData));
+        setIsVisible(false);
     }
 
     function deleteTaskConfirmed(confirmParameters) {
@@ -54,6 +59,7 @@ export default Tasks = () => {
         taskList = taskList.filter(item => item.id != id);
         dispatch(saveTodos(taskList));
         dispatch(toggleModal());
+        setItemId(null);
     }
 
     function toggleCompleted(id) {
@@ -64,6 +70,22 @@ export default Tasks = () => {
             return task;
         });
         dispatch(saveTodos(taskList));
+        setItemId(null);
+        setIsVisible(false);
+    }
+
+    function editTask(id) {
+        console.log(id);
+    }
+
+    function showActions(id) {
+        setItemId(id);
+        setIsVisible(true);
+    }
+
+    function cancelHandler() {
+        setItemId(null);
+        setIsVisible(false);
     }
 
     return (
@@ -87,17 +109,26 @@ export default Tasks = () => {
             }
             {
                 taskList.map((task) => (
-                    <TouchableOpacity activeOpacity={0.5}  key={task.id} style={[{ backgroundColor: ThemeColors.taskBackgroundColor }, styles.taskStyle]} onPress={() => toggleCompleted(task.id)}>
+                    <TouchableOpacity activeOpacity={0.5} key={task.id} style={[{ backgroundColor: ThemeColors.taskBackgroundColor }, styles.taskStyle]} onPress={() => toggleCompleted(task.id)}>
                         <View style={[styles.taskTextContainer, task.completed ? styles.taskContainerCompleted : null]}>
                             <Text style={[{ color: ThemeColors.textColor }, styles.taskText, task.completed ? styles.taskTextCompleted : null]}>{task.text}</Text>
                             <Text style={[{ color: ThemeColors.createdAtColor }, styles.createdAt]}>{task.createdAt}</Text>
                         </View>
-                        <TouchableOpacity activeOpacity={0.5}  style={styles.deleteButton} onPress={() => deleteTask(task.id)}>
-                            <MaterialIcons name="delete" size={36} color={ThemeColors.textColor} />
+
+                        <TouchableOpacity activeOpacity={0.5} style={styles.deleteButton} onPress={() => showActions(task.id)}>
+                            <MaterialCommunityIcons name="dots-vertical" size={28} color={ThemeColors.textColor} />
                         </TouchableOpacity>
                     </TouchableOpacity>
                 ))
             }
+            <ActionsModal
+                isVisible={isVisible}
+                id={itemId}
+                editHandler={editTask}
+                markCompleteHandler={toggleCompleted}
+                deleteHandler={deleteTask}
+                cancelHandler={cancelHandler}
+            />
         </ScrollView>
     );
 }
@@ -121,7 +152,7 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     deleteButton: {
-        padding: 5
+        padding: 5,
     },
     taskStyle: {
         paddingVertical: 5,
@@ -133,10 +164,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     taskTextContainer: {
-        width: '89%',
+        width: '92%',
         paddingLeft: 10,
-        paddingTop: 10,
-        paddingBottom: 10
+        paddingVertical: 10,
     },
     taskText: {
         fontSize: 20,

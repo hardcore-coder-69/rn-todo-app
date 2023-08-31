@@ -1,17 +1,21 @@
 import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import React, { useState, useEffect } from "react";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from "react-redux";
 
 import { getThemeColors } from "../utils/Helper";
 import { saveNotes, fetchNotes } from "../store/actions/notes";
 import { toggleModal } from "../store/actions/common";
+import ActionsModal from "./Reusable/ActionsModal";
 
 export default Notes = () => {
     let [note, setNote] = useState('');
     let notes = useSelector(state => state.notes.notes);
     const dispatch = useDispatch();
     const ThemeColors = getThemeColors();
+
+    let [itemId, setItemId] = useState(null);
+    let [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
         dispatch(fetchNotes());
@@ -45,6 +49,7 @@ export default Notes = () => {
         }
 
         dispatch(toggleModal(modalData));
+        setIsVisible(false);
     }
 
     function deleteNoteConfirmed(confirmParameters) {
@@ -52,6 +57,21 @@ export default Notes = () => {
         notes = notes.filter(item => item.id != id);
         dispatch(saveNotes(notes));
         dispatch(toggleModal());
+        setItemId(false);
+    }
+
+    function editNote(id) {
+        console.log(id);
+    }
+
+    function showActions(id) {
+        setItemId(id);
+        setIsVisible(true);
+    }
+
+    function cancelHandler() {
+        setItemId(null);
+        setIsVisible(false);
     }
 
     return (
@@ -82,12 +102,19 @@ export default Notes = () => {
                             <Text style={[{ color: ThemeColors.textColor }, styles.taskText]}>{note.text}</Text>
                             <Text style={[{ color: ThemeColors.createdAtColor }, styles.createdAt]}>{note.createdAt}</Text>
                         </View>
-                        <TouchableOpacity activeOpacity={0.5} style={styles.deleteButton} onPress={() => deleteNote(note.id)}>
-                            <MaterialIcons name="delete" size={36} color={ThemeColors.textColor} />
+                        <TouchableOpacity activeOpacity={0.5} style={styles.deleteButton} onPress={() => showActions(note.id)}>
+                            <MaterialCommunityIcons name="dots-vertical" size={28} color={ThemeColors.textColor} />
                         </TouchableOpacity>
                     </TouchableOpacity>
                 ))
             }
+            <ActionsModal
+                isVisible={isVisible}
+                id={itemId}
+                editHandler={editNote}
+                deleteHandler={deleteNote}
+                cancelHandler={cancelHandler}
+            />
         </ScrollView>
     );
 }
@@ -128,7 +155,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     taskTextContainer: {
-        width: '89%',
+        width: '92%',
         paddingLeft: 10,
         paddingTop: 10,
         paddingBottom: 10

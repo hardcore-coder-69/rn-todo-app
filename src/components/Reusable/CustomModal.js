@@ -23,8 +23,8 @@ export default CustomModal = () => {
     return (
         <Modal
             isVisible={modal.isVisible}
-            backdropColor={ThemeColors.textColor}
-            backdropOpacity={.3}
+            backdropColor="#000"
+            backdropOpacity={.5}
             animationIn="slideInDown"
             animationInTiming={300}
         >
