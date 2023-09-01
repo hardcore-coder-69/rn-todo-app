@@ -30,6 +30,7 @@ export default CustomModal = () => {
             backdropOpacity={.5}
             animationIn="slideInDown"
             animationInTiming={300}
+            onBackdropPress={cancel}
         >
             <View style={[{ backgroundColor: ThemeColors.taskBackgroundColor }, styles.modalContainer]}>
                 <View style={styles.actionsHeader}>

@@ -6,14 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { getThemeColors } from "../../utils/Helper";
 import { hideNotification } from "../../store/actions/common";
 
-export default Notification = ({ message, type }) => {
-    const { showNotification } = useSelector(state => state.common.notification);
+export default Notification = ({ message, type, id, index }) => {
+    const notifications = useSelector(state => state.common.notifications);
     const dispatch = useDispatch();
     const ThemeColors = getThemeColors();
     const slideAnim = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
-        if (showNotification) {
+        if (notifications) {
             Animated.spring(slideAnim, {
                 toValue: 1,
                 useNativeDriver: true,
@@ -24,12 +24,13 @@ export default Notification = ({ message, type }) => {
                 useNativeDriver: true,
             }).start();
         }
-    }, [showNotification]);
+    }, [notifications]);
 
+    const bottomPos = Number(10 * Number(index * 5));
     return (
         <Animated.View
             style={[
-                { backgroundColor: ThemeColors[type] },
+                { backgroundColor: ThemeColors[type], bottom: bottomPos },
                 styles.container,
                 {
                     transform: [{
@@ -40,7 +41,7 @@ export default Notification = ({ message, type }) => {
                     }],
                 },]}>
             <Text style={[{}, styles.message]}>{message}</Text>
-            <TouchableOpacity activeOpacity={0.5} onPress={() => dispatch(hideNotification())} style={[]}>
+            <TouchableOpacity activeOpacity={0.5} onPress={() => dispatch(hideNotification(id))} style={[]}>
                 <MaterialCommunityIcons name="close" size={28} color="#fff" />
             </TouchableOpacity>
         </Animated.View>
@@ -58,7 +59,6 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         borderRadius: 5,
         position: 'absolute',
-        bottom: '3%',
     },
     message: {
         fontSize: 20,

@@ -46,16 +46,16 @@ export default Home = () => {
     };
 
     return (
-        <GestureHandlerRootView style={{ flex: 1 }}>
-            <PanGestureHandler onGestureEvent={handleSwipe}>
-                <ScrollView style={styles.container}>
-                    <View style={styles.tabsContainer}>
-                        <Tabs options={TabOptions} />
-                    </View>
-                    {selectedTabComponent}
-                </ScrollView>
-            </PanGestureHandler>
-        </GestureHandlerRootView >
+        <ScrollView style={styles.container}>
+            {/* <GestureHandlerRootView style={{ flex: 1 }}>
+                <PanGestureHandler onGestureEvent={handleSwipe}> */}
+            <View style={styles.tabsContainer}>
+                <Tabs options={TabOptions} />
+            </View>
+            {selectedTabComponent}
+            {/* </PanGestureHandler>
+            </GestureHandlerRootView > */}
+        </ScrollView>
     )
 };
 

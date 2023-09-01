@@ -24,6 +24,7 @@ export default ActionsModal = (props) => {
             backdropOpacity={.5}
             animationIn="slideInDown"
             animationInTiming={300}
+            onBackdropPress={cancelHandler}
         >
             <View style={[{ backgroundColor: ThemeColors.taskBackgroundColor }, styles.modalContainer]}>
                 <View style={styles.actionsHeader}>

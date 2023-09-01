@@ -78,22 +78,35 @@ export const setSavedTab = () => {
 }
 
 // Notifications
-export const showNotification = ({ message, type, time = 2000 }) => {
-    // return async (dispatch) => {
-    //     dispatch({
-    //         type: SHOW_NOTIFICATION,
-    //         payload: {
-    //             message: message,
-    //             type: type
-    //         }
-    //     })
+export const showNotification = ({ message, type, time = 3000 }) => {
+    // Comment this if you want to show notifcations
+    // return { type: HIDE_NOTIFICATION, payload: 1 }
 
-    //     await new Promise(resolve => setTimeout(() => {
-    //         dispatch({ type: HIDE_NOTIFICATION });
-    //         resolve();
-    //     }, time));
-    // }
+    // Uncomment this if you want to show notifcations
+    return async (dispatch) => {
+        const id = Math.floor(Math.random() * 100000);
+
+        dispatch({
+            type: SHOW_NOTIFICATION,
+            payload: {
+                id: id,
+                message: message,
+                type: type
+            }
+        })
+
+        await new Promise(resolve => setTimeout(() => {
+            dispatch({
+                type: HIDE_NOTIFICATION,
+                payload: id
+            });
+            resolve();
+        }, time));
+    }
 }
-export const hideNotification = () => {
-    // return { type: HIDE_NOTIFICATION }
+export const hideNotification = (id) => {
+    return {
+        type: HIDE_NOTIFICATION,
+        payload: id
+    }
 }

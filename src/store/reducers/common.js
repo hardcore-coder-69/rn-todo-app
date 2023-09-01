@@ -1,7 +1,7 @@
-import { 
-    TOGGLE_THEME, 
-    TOGGLE_MODAL, 
-    SWITCH_TAB, 
+import {
+    TOGGLE_THEME,
+    TOGGLE_MODAL,
+    SWITCH_TAB,
     HIDE_NOTIFICATION,
     SHOW_NOTIFICATION
 } from "../actions/common";
@@ -9,11 +9,7 @@ import {
 const initialState = {
     isDark: false,
     selectedTab: 'tasks',
-    notification: {
-        message: null,
-        type: null,
-        showNotification: null
-    },
+    notifications: [],   // { id: null, message: null, type: null }
     modal: {
         isVisible: false,
         title: null,
@@ -57,20 +53,12 @@ export default (state = initialState, action) => {
         case SHOW_NOTIFICATION:
             return {
                 ...state,
-                notification: {
-                    showNotification: true,
-                    message: action.payload.message,
-                    type: action.payload.type
-                }
+                notifications: [...state.notifications, { ...action.payload }]
             }
         case HIDE_NOTIFICATION:
             return {
                 ...state,
-                notification: {
-                    showNotification: false,
-                    message: null,
-                    type: null
-                }
+                notifications: state.notifications.filter(item => item.id !== action.payload)
             }
         default:
             return state

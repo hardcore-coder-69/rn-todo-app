@@ -11,7 +11,7 @@ import { setAppTheme } from "./store/actions/common";
 import Notification from "./components/Reusable/Notification";
 
 export default function Main() {
-    const { showNotification, message, type } = useSelector(state => state.common.notification);
+    const notifications = useSelector(state => state.common.notifications);
     const dispatch = useDispatch();
     const ThemeColors = getThemeColors();
 
@@ -25,7 +25,11 @@ export default function Main() {
             <Home />
             <StatusBar style={ThemeColors.statusBarTheme} />
             <CustomModal />
-            {showNotification && <Notification message={message} type={type}/>}
+            {
+                notifications.map((item, i) => (
+                    <Notification message={item.message} type={item.type} id={item.id} key={item.id} index={i}/>
+                ))
+            }
         </View>
     );
 }
