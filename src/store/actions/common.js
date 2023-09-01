@@ -79,21 +79,21 @@ export const setSavedTab = () => {
 
 // Notifications
 export const showNotification = ({ message, type, time = 2000 }) => {
-    return async (dispatch) => {
-        dispatch({
-            type: SHOW_NOTIFICATION,
-            payload: {
-                message: message,
-                type: type
-            }
-        })
+    // return async (dispatch) => {
+    //     dispatch({
+    //         type: SHOW_NOTIFICATION,
+    //         payload: {
+    //             message: message,
+    //             type: type
+    //         }
+    //     })
 
-        await new Promise(resolve => setTimeout(() => {
-            dispatch({ type: HIDE_NOTIFICATION });
-            resolve();
-        }, time));
-    }
+    //     await new Promise(resolve => setTimeout(() => {
+    //         dispatch({ type: HIDE_NOTIFICATION });
+    //         resolve();
+    //     }, time));
+    // }
 }
 export const hideNotification = () => {
-    return { type: HIDE_NOTIFICATION }
+    // return { type: HIDE_NOTIFICATION }
 }
