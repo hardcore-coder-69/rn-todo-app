@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getThemeColors } from "../utils/Helper";
 import { fetchTodos, saveTodos } from "../store/actions/todos";
-import { toggleModal } from "../store/actions/common";
+import { showNotification, toggleModal } from "../store/actions/common";
 import ActionsModal from "./Reusable/ActionsModal";
 import EditModal from "./Reusable/EditModal";
 
@@ -73,19 +73,30 @@ export default Tasks = () => {
     function deleteTaskConfirmed(confirmParameters) {
         let id = confirmParameters.taskId;
         taskList = taskList.filter(item => item.id != id);
+        setItemId(null);
         dispatch(saveTodos(taskList));
         dispatch(toggleModal());
-        setItemId(null);
+
+        dispatch(showNotification({
+            message: 'Task deleted successfully.',
+            type: 'dangerType'
+        }))
     }
 
     function toggleCompleted(id) {
+        let isCompleted;
         taskList = taskList.map(task => {
             if (task.id === id) {
-                task.completed = !task.completed;
+                isCompleted = !task.completed;
+                task.completed = isCompleted;
             }
             return task;
         });
         dispatch(saveTodos(taskList));
+        dispatch(showNotification({
+            message: `Task marked as ${isCompleted ? 'completed' : 'pending'}.`,
+            type: isCompleted ? 'successType' : 'warningType'
+        }));
         setItemId(null);
         setIsVisible(false);
     }
@@ -124,6 +135,10 @@ export default Tasks = () => {
         });
         dispatch(saveTodos(taskList));
         setShowEditModal(false);
+        dispatch(showNotification({
+            message: 'Task edited successfully.',
+            type: 'successType'
+        }))
     }
 
     return (
@@ -151,7 +166,7 @@ export default Tasks = () => {
                     <TouchableOpacity activeOpacity={0.5} key={task.id} style={[{ backgroundColor: ThemeColors.taskBackgroundColor }, styles.taskStyle]} onPress={() => toggleCompleted(task.id)}>
                         <View style={[styles.taskTextContainer, task.completed ? styles.taskContainerCompleted : null]}>
                             <Text style={[{ color: ThemeColors.textColor }, styles.taskText, task.completed ? styles.taskTextCompleted : null]}>{task.text}</Text>
-                            <Text style={[{ color: ThemeColors.createdAtColor }, styles.createdAt]}>{task.createdAt}</Text>
+                            <Text style={[{ color: ThemeColors.createdAtColor }, styles.createdAt]}>{task.updatedAt}</Text>
                         </View>
 
                         <TouchableOpacity activeOpacity={0.5} style={styles.deleteButton} onPress={() => showActions(task.id, task.text, task.completed)}>

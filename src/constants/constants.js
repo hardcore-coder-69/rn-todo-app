@@ -13,7 +13,11 @@ export const COMMON = {
         disabledButon: '#C0C0C0',
         enabledButton: 'green',
         borderColor: 'lightgrey',
-        inputBackgroundColor: '#ebeded'
+        inputBackgroundColor: '#ebeded',
+        successType: 'green',
+        dangerType: 'red',
+        warningType: '#FF9800',
+        normalType: 'grey'
     },
     dark: {
         backgroundColor: '#000',
@@ -28,6 +32,10 @@ export const COMMON = {
         disabledButon: '#555555',
         enabledButton: 'green',
         borderColor: '#404040',
-        inputBackgroundColor: '#282828'
+        inputBackgroundColor: '#282828',
+        successType: 'green',
+        dangerType: 'red',
+        warningType: '#FF9800',
+        normalType: '#525151'
     }
 }

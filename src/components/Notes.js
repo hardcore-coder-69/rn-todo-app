@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getThemeColors } from "../utils/Helper";
 import { saveNotes, fetchNotes } from "../store/actions/notes";
-import { toggleModal } from "../store/actions/common";
+import { toggleModal, showNotification } from "../store/actions/common";
 import ActionsModal from "./Reusable/ActionsModal";
 import EditModal from "./Reusable/EditModal";
 
@@ -63,6 +63,10 @@ export default Notes = () => {
         dispatch(saveNotes(notes));
         dispatch(toggleModal());
         setItemId(false);
+        dispatch(showNotification({
+            message: 'Note deleted successfully.',
+            type: 'dangerType'
+        }))
     }
 
     function editNote() {
@@ -97,6 +101,11 @@ export default Notes = () => {
         });
         dispatch(saveNotes(notes));
         setShowEditModal(false);
+
+        dispatch(showNotification({
+            message: 'Note edited successfully.',
+            type: 'successType'
+        }))
     }
 
     function showFullNote(note) {
