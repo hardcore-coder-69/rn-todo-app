@@ -15,7 +15,7 @@ export default Tabs = ({ options }) => {
     }
 
     return (
-        <View style={[{borderColor: ThemeColors.tabBackgroundColor}, styles.container]}>
+        <View style={[{borderColor: ThemeColors.tabBackgroundColor, backgroundColor: ThemeColors.backgroundColor}, styles.container]}>
             {options.map(tab => (
                 <Pressable
                     key={tab.key} onPress={() => changeTab(tab.key)}
@@ -34,12 +34,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        borderWidth: 1,
+        borderTopWidth: 1,
+        // Show like buttons
+        // borderWidth: 1, 
         borderRadius: 6
     },
     pressable: {
         width: '50%',
-        borderRadius: 5,
+        // Show like buttons
+        // borderRadius: 5,
         paddingVertical: 10,
         paddingHorizontal: 10
     },

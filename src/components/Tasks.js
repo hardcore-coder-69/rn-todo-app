@@ -142,7 +142,7 @@ export default Tasks = () => {
     }
 
     return (
-        <ScrollView>
+        <ScrollView style={styles.container}>
             <TextInput
                 value={task}
                 style={[{ borderColor: ThemeColors.backgroundColor, color: ThemeColors.textColor, backgroundColor: ThemeColors.inputBackgroundColor }, styles.input]}
@@ -196,6 +196,9 @@ export default Tasks = () => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        paddingBottom: 65
+    },
     input: {
         fontSize: 20,
         borderWidth: 1,
@@ -204,7 +207,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginBottom: 10,
         textAlignVertical: 'top',
-        // minHeight: screenHeight / 12.9,
         maxHeight: screenHeight / 7
     },
     button: {

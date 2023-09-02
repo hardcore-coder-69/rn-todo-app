@@ -1,24 +1,10 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet, ScrollView, Dimensions } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { GestureHandlerRootView, PanGestureHandler } from 'react-native-gesture-handler';
-
-import Tabs from "./Reusable/Tabs";
 import { setSavedTab, switchTabs } from "../store/actions/common";
-
 import Tasks from "./Tasks";
 import Notes from "./Notes";
-
-const TabOptions = [
-    {
-        key: 'tasks',
-        text: 'Tasks'
-    },
-    {
-        key: 'notes',
-        text: 'Notes'
-    }
-]
 
 export default Home = () => {
     const dispatch = useDispatch();
@@ -49,9 +35,6 @@ export default Home = () => {
         <ScrollView style={styles.container}>
             {/* <GestureHandlerRootView style={{ flex: 1 }}>
                 <PanGestureHandler onGestureEvent={handleSwipe}> */}
-            <View style={styles.tabsContainer}>
-                <Tabs options={TabOptions} />
-            </View>
             {selectedTabComponent}
             {/* </PanGestureHandler>
             </GestureHandlerRootView > */}
@@ -61,10 +44,7 @@ export default Home = () => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         paddingHorizontal: 15,
+        paddingTop: 10,
     },
-    tabsContainer: {
-        paddingVertical: 10
-    }
 })

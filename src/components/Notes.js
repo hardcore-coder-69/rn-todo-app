@@ -119,7 +119,7 @@ export default Notes = () => {
     }
 
     return (
-        <ScrollView>
+        <ScrollView style={styles.container}>
             <TextInput
                 value={note}
                 style={[{ borderColor: ThemeColors.backgroundColor, color: ThemeColors.textColor, backgroundColor: ThemeColors.inputBackgroundColor }, styles.input]}
@@ -178,6 +178,9 @@ export default Notes = () => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        paddingBottom: 65
+    },
     input: {
         fontSize: 20,
         borderWidth: 1,

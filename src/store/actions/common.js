@@ -1,8 +1,8 @@
+export const SHOW_NOTIFICATION = 'SHOW_NOTIFICATION';
+export const HIDE_NOTIFICATION = 'HIDE_NOTIFICATION';
 export const TOGGLE_THEME = 'TOGGLE_THEME';
 export const TOGGLE_MODAL = 'TOGGLE_MODAL';
 export const SWITCH_TAB = 'SWITCH_TAB';
-export const SHOW_NOTIFICATION = 'SHOW_NOTIFICATION';
-export const HIDE_NOTIFICATION = 'HIDE_NOTIFICATION';
 
 import * as FileSystem from 'expo-file-system';
 
@@ -15,12 +15,6 @@ export const toggleTheme = (themeObj) => {
             type: TOGGLE_THEME,
             payload: themeObj.isDark
         });
-
-        // Notification
-        dispatch(showNotification({
-            message: `Switched to ${themeObj.isDark ? 'dark' : 'light'} mode.`,
-            type: 'normalType'
-        }));
     }
 };
 
@@ -80,29 +74,32 @@ export const setSavedTab = () => {
 // Notifications
 export const showNotification = ({ message, type, time = 3000 }) => {
     // Comment this if you want to show notifcations
-    return { type: HIDE_NOTIFICATION, payload: 1 }
-
-    // Uncomment this if you want to show notifcations
-    // return async (dispatch) => {
-    //     const id = Math.floor(Math.random() * 100000);
-
-    //     dispatch({
-    //         type: SHOW_NOTIFICATION,
-    //         payload: {
-    //             id: id,
-    //             message: message,
-    //             type: type
-    //         }
-    //     })
-
-    //     await new Promise(resolve => setTimeout(() => {
-    //         dispatch({
-    //             type: HIDE_NOTIFICATION,
-    //             payload: id
-    //         });
-    //         resolve();
-    //     }, time));
+    // return {
+    //     type: HIDE_NOTIFICATION,
+    //     payload: 1
     // }
+
+    // Comment this if you don't want to show notifcations
+    return async (dispatch) => {
+        const id = Math.floor(Math.random() * 100000);
+
+        dispatch({
+            type: SHOW_NOTIFICATION,
+            payload: {
+                id: id,
+                message: message,
+                type: type
+            }
+        })
+
+        await new Promise(resolve => setTimeout(() => {
+            dispatch({
+                type: HIDE_NOTIFICATION,
+                payload: id
+            });
+            resolve();
+        }, time));
+    }
 }
 export const hideNotification = (id) => {
     return {

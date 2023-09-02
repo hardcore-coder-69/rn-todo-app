@@ -13,7 +13,7 @@ export default Notification = ({ message, type, id, index }) => {
     const slideAnim = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
-        if (notifications) {
+        if (notifications.length > 0) {
             Animated.spring(slideAnim, {
                 toValue: 1,
                 useNativeDriver: true,
@@ -26,17 +26,17 @@ export default Notification = ({ message, type, id, index }) => {
         }
     }, [notifications]);
 
-    const bottomPos = Number(10 * Number(index * 5));
+    const topPos = Number(10 * Number(index * 5) + 40);
     return (
         <Animated.View
             style={[
-                { backgroundColor: ThemeColors[type], bottom: bottomPos },
+                { backgroundColor: ThemeColors[type], top: topPos },
                 styles.container,
                 {
                     transform: [{
                         translateY: slideAnim.interpolate({
                             inputRange: [0, 1],
-                            outputRange: [500, 0],
+                            outputRange: [-500, 0],
                         })
                     }],
                 },]}>

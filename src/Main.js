@@ -9,6 +9,8 @@ import CustomModal from "./components/Reusable/CustomModal";
 import { getThemeColors } from "./utils/Helper";
 import { setAppTheme } from "./store/actions/common";
 import Notification from "./components/Reusable/Notification";
+import Tabs from "./components/Reusable/Tabs";
+const TabOptions = [{ key: 'tasks', text: 'Tasks' }, { key: 'notes', text: 'Notes' }];
 
 export default function Main() {
     const notifications = useSelector(state => state.common.notifications);
@@ -21,15 +23,18 @@ export default function Main() {
 
     return (
         <View style={[{ backgroundColor: ThemeColors.backgroundColor }, styles.container]}>
-            <Header />
-            <Home />
             <StatusBar style={ThemeColors.statusBarTheme} />
-            <CustomModal />
+            <Header/>
+            <Home/>
+            <CustomModal/>
             {
                 notifications.map((item, i) => (
                     <Notification message={item.message} type={item.type} id={item.id} key={item.id} index={i}/>
-                ))
-            }
+                    ))
+                }
+            <View style={styles.tabsContainer}>
+                <Tabs options={TabOptions} />
+            </View>
         </View>
     );
 }
@@ -38,4 +43,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    tabsContainer: {
+        position: 'absolute',
+        bottom: 0
+    }
 });
