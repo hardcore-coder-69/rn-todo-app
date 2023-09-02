@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import React, { useState, useEffect } from "react";
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from "react-redux";
@@ -119,7 +119,7 @@ export default Notes = () => {
     }
 
     return (
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
             <TextInput
                 value={note}
                 style={[{ borderColor: ThemeColors.backgroundColor, color: ThemeColors.textColor, backgroundColor: ThemeColors.inputBackgroundColor }, styles.input]}
@@ -173,7 +173,7 @@ export default Notes = () => {
                 cancelHandler={cancelHandler}
                 saveHandler={saveEditedNote}
             />
-        </ScrollView>
+        </View>
     );
 }
 

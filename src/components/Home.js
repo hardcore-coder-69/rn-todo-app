@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { GestureHandlerRootView, PanGestureHandler } from 'react-native-gesture-handler';
 import { setSavedTab, switchTabs } from "../store/actions/common";
@@ -32,13 +32,15 @@ export default Home = () => {
     };
 
     return (
-        <ScrollView style={styles.container}>
-            {/* <GestureHandlerRootView style={{ flex: 1 }}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
+                {/* <GestureHandlerRootView style={{ flex: 1 }}>
                 <PanGestureHandler onGestureEvent={handleSwipe}> */}
-            {selectedTabComponent}
-            {/* </PanGestureHandler>
+                {selectedTabComponent}
+                {/* </PanGestureHandler>
             </GestureHandlerRootView > */}
-        </ScrollView>
+            </ScrollView>
+        </TouchableWithoutFeedback>
     )
 };
 

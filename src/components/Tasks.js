@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity, Dimensions } from "react-native";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Dimensions } from "react-native";
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from "react-redux";
 
@@ -142,7 +142,7 @@ export default Tasks = () => {
     }
 
     return (
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
             <TextInput
                 value={task}
                 style={[{ borderColor: ThemeColors.backgroundColor, color: ThemeColors.textColor, backgroundColor: ThemeColors.inputBackgroundColor }, styles.input]}
@@ -191,7 +191,7 @@ export default Tasks = () => {
                 cancelHandler={cancelHandler}
                 saveHandler={saveEditedTask}
             />
-        </ScrollView>
+        </View>
     );
 }
 
