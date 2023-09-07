@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from "react-redux";
 
-import { getThemeColors } from "../utils/Helper";
+import { getThemeColors, formateDate } from "../utils/Helper";
 import { saveNotes, fetchNotes } from "../store/actions/notes";
 import { toggleModal, showNotification } from "../store/actions/common";
 import ActionsModal from "./Reusable/ActionsModal";
@@ -29,7 +29,6 @@ export default Notes = () => {
         if (note === '') return;
 
         let time = new Date();
-        time = time.toLocaleTimeString() + ' ' + time.toLocaleDateString();
 
         let obj = {
             id: Math.floor(Math.random() * 100000),
@@ -40,6 +39,10 @@ export default Notes = () => {
         notes.unshift(obj);
         setNote('');
         dispatch(saveNotes(notes));
+        dispatch(showNotification({
+            message: 'New note added',
+            type: 'successType'
+        }))
     }
 
     function deleteNote(id) {
@@ -64,7 +67,7 @@ export default Notes = () => {
         dispatch(toggleModal());
         setItemId(false);
         dispatch(showNotification({
-            message: 'Note deleted successfully.',
+            message: 'Note deleted successfully',
             type: 'dangerType'
         }))
     }
@@ -89,7 +92,6 @@ export default Notes = () => {
 
     function saveEditedNote(id, newText) {
         let time = new Date();
-        time = time.toLocaleTimeString() + ' ' + time.toLocaleDateString();
 
         notes = notes.map(item => {
             if (item.id === id) {
@@ -103,7 +105,7 @@ export default Notes = () => {
         setShowEditModal(false);
 
         dispatch(showNotification({
-            message: 'Note edited successfully.',
+            message: 'Note edited successfully',
             type: 'successType'
         }))
     }
@@ -149,7 +151,7 @@ export default Notes = () => {
                     >
                         <View style={[styles.taskTextContainer]}>
                             <Text style={[{ color: ThemeColors.textColor }, styles.taskText]} numberOfLines={6} ellipsizeMode="tail">{note.text}</Text>
-                            <Text style={[{ color: ThemeColors.createdAtColor }, styles.createdAt]}>{note.updatedAt}</Text>
+                            <Text style={[{ color: ThemeColors.createdAtColor }, styles.createdAt]}>{formateDate(note.updatedAt)}</Text>
                         </View>
                         <TouchableOpacity activeOpacity={0.5} style={styles.deleteButton} onPress={() => showActions(note.id, note.text)}>
                             <MaterialCommunityIcons name="dots-vertical" size={28} color={ThemeColors.textColor} />

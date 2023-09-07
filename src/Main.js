@@ -24,14 +24,14 @@ export default function Main() {
     return (
         <View style={[{ backgroundColor: ThemeColors.backgroundColor }, styles.container]}>
             <StatusBar style={ThemeColors.statusBarTheme} />
-            <Header/>
-            <Home/>
-            <CustomModal/>
+            <Header />
+            <Home />
+            <CustomModal />
             {
                 notifications.map((item, i) => (
-                    <Notification message={item.message} type={item.type} id={item.id} key={item.id} index={i}/>
-                    ))
-                }
+                    <Notification message={item.message} type={item.type} id={item.id} key={item.id} index={i} />
+                ))
+            }
             <View style={styles.tabsContainer}>
                 <Tabs options={TabOptions} />
             </View>

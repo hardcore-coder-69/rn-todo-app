@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Dimensions } from 
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from "react-redux";
 
-import { getThemeColors } from "../utils/Helper";
+import { getThemeColors, formateDate } from "../utils/Helper";
 import { fetchTodos, saveTodos } from "../store/actions/todos";
 import { showNotification, toggleModal } from "../store/actions/common";
 import ActionsModal from "./Reusable/ActionsModal";
@@ -40,7 +40,6 @@ export default Tasks = () => {
         }
 
         let time = new Date();
-        time = time.toLocaleTimeString() + ' ' + time.toLocaleDateString();
 
         let obj = {
             id: Math.floor(Math.random() * 100000),
@@ -52,6 +51,10 @@ export default Tasks = () => {
         taskList.unshift(obj);
         setTask('');
         dispatch(saveTodos(taskList));
+        dispatch(showNotification({
+            message: 'New task added',
+            type: 'successType'
+        }))
     }
 
 
@@ -78,7 +81,7 @@ export default Tasks = () => {
         dispatch(toggleModal());
 
         dispatch(showNotification({
-            message: 'Task deleted successfully.',
+            message: 'Task deleted successfully',
             type: 'dangerType'
         }))
     }
@@ -94,7 +97,7 @@ export default Tasks = () => {
         });
         dispatch(saveTodos(taskList));
         dispatch(showNotification({
-            message: `Task marked as ${isCompleted ? 'completed' : 'pending'}.`,
+            message: `Task marked as ${isCompleted ? 'completed' : 'pending'}`,
             type: isCompleted ? 'successType' : 'warningType'
         }));
         setItemId(null);
@@ -122,7 +125,6 @@ export default Tasks = () => {
 
     function saveEditedTask(id, newText) {
         let time = new Date();
-        time = time.toLocaleTimeString() + ' ' + time.toLocaleDateString();
 
         taskList = taskList.map(item => {
             if (item.id === id) {
@@ -136,7 +138,7 @@ export default Tasks = () => {
         dispatch(saveTodos(taskList));
         setShowEditModal(false);
         dispatch(showNotification({
-            message: 'Task edited successfully.',
+            message: 'Task edited successfully',
             type: 'successType'
         }))
     }
@@ -166,7 +168,7 @@ export default Tasks = () => {
                     <TouchableOpacity activeOpacity={0.5} key={task.id} style={[{ backgroundColor: ThemeColors.taskBackgroundColor }, styles.taskStyle]} onPress={() => toggleCompleted(task.id)}>
                         <View style={[styles.taskTextContainer, task.completed ? styles.taskContainerCompleted : null]}>
                             <Text style={[{ color: ThemeColors.textColor }, styles.taskText, task.completed ? styles.taskTextCompleted : null]}>{task.text}</Text>
-                            <Text style={[{ color: ThemeColors.createdAtColor }, styles.createdAt]}>{task.updatedAt}</Text>
+                            <Text style={[{ color: ThemeColors.createdAtColor }, styles.createdAt]}>{formateDate(task.updatedAt)}</Text>
                         </View>
 
                         <TouchableOpacity activeOpacity={0.5} style={styles.deleteButton} onPress={() => showActions(task.id, task.text, task.completed)}>

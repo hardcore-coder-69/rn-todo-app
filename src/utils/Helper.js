@@ -9,3 +9,15 @@ export function getThemeColors() {
     }
     return COMMON.light;
 }
+
+export function formateDate(date) {
+    let visibleDate = new Date(date);
+    try {
+        let day = visibleDate.getDate();
+        let month = visibleDate.toLocaleString('en-US', { month: 'short' });
+        let year = visibleDate.getFullYear();
+        visibleDate = day + ' ' + month + ' ' + year + ' ' + visibleDate.toLocaleTimeString();
+        return visibleDate;
+    } catch (error) { }
+    return visibleDate.toDateString();
+}

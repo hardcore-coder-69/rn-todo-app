@@ -26,7 +26,7 @@ export default Notification = ({ message, type, id, index }) => {
         }
     }, [notifications]);
 
-    const topPos = Number(10 * Number(index * 5) + 40);
+    const topPos = Number(7.5 * Number(index * 5) + 40);
     return (
         <Animated.View
             style={[
@@ -42,7 +42,7 @@ export default Notification = ({ message, type, id, index }) => {
                 },]}>
             <Text style={[{}, styles.message]}>{message}</Text>
             <TouchableOpacity activeOpacity={0.5} onPress={() => dispatch(hideNotification(id))} style={[]}>
-                <MaterialCommunityIcons name="close" size={28} color="#fff" />
+                <MaterialCommunityIcons name="close" size={24} color="#fff" />
             </TouchableOpacity>
         </Animated.View>
     );
@@ -56,12 +56,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginHorizontal: 20,
         paddingHorizontal: 20,
-        paddingVertical: 8,
+        paddingVertical: 4.5,
         borderRadius: 50,
         position: 'absolute',
     },
     message: {
-        fontSize: 20,
+        fontSize: 16,
         width: '90%',
         color: "#fff"
     }

@@ -39,7 +39,7 @@ export default CustomModal = () => {
                         <MaterialCommunityIcons name="close" size={28} color={ThemeColors.textColor} />
                     </TouchableOpacity>
                 </View>
-                <ScrollView style={{ maxHeight: screenHeight * 0.85 }}>
+                <ScrollView style={{ maxHeight: screenHeight * 0.75 }}>
                     <Text style={[{ color: ThemeColors.textColor }, styles.modalText]}>{modal.message}</Text>
                 </ScrollView>
 
