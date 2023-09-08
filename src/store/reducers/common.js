@@ -3,10 +3,12 @@ import {
     TOGGLE_MODAL,
     SWITCH_TAB,
     HIDE_NOTIFICATION,
-    SHOW_NOTIFICATION
+    SHOW_NOTIFICATION,
+    SET_LOADING
 } from "../actions/common";
 
 const initialState = {
+    isLoading: false,
     isDark: false,
     selectedTab: 'tasks',
     notifications: [],   // { id: null, message: null, type: null }
@@ -24,6 +26,12 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
+        case SET_LOADING: {
+            return {
+                ...state,
+                isLoading: action.payload
+            }
+        }
         case TOGGLE_THEME:
             return {
                 ...state,

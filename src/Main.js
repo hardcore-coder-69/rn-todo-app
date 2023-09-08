@@ -1,25 +1,35 @@
 import React, { useEffect } from "react";
 import { StatusBar } from 'expo-status-bar';
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import Header from "./components/Header";
 import Home from "./components/Home";
 import CustomModal from "./components/Reusable/CustomModal";
 import { getThemeColors } from "./utils/Helper";
-import { setAppTheme } from "./store/actions/common";
+import { setAppTheme, setLoading } from "./store/actions/common";
 import Notification from "./components/Reusable/Notification";
 import Tabs from "./components/Reusable/Tabs";
 const TabOptions = [{ key: 'tasks', text: 'Tasks' }, { key: 'notes', text: 'Notes' }];
 
 export default function Main() {
+    const isLoading = useSelector(state => state.common.isLoading);
     const notifications = useSelector(state => state.common.notifications);
     const dispatch = useDispatch();
     const ThemeColors = getThemeColors();
 
     useEffect(() => {
+        dispatch(setLoading(true));
         dispatch(setAppTheme());
     }, [dispatch])
+
+    if (isLoading) {
+        return (
+            <View style={styles.ActivityIndicator}>
+                <ActivityIndicator size="48" color="#fff" />
+            </View>
+        )
+    }
 
     return (
         <View style={[{ backgroundColor: ThemeColors.backgroundColor }, styles.container]}>
@@ -46,5 +56,12 @@ const styles = StyleSheet.create({
     tabsContainer: {
         position: 'absolute',
         bottom: 0
+    },
+    ActivityIndicator: {
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#000'
     }
 });

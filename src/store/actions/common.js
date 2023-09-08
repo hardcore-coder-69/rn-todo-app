@@ -3,6 +3,7 @@ export const HIDE_NOTIFICATION = 'HIDE_NOTIFICATION';
 export const TOGGLE_THEME = 'TOGGLE_THEME';
 export const TOGGLE_MODAL = 'TOGGLE_MODAL';
 export const SWITCH_TAB = 'SWITCH_TAB';
+export const SET_LOADING = 'SET_LOADING';
 
 import * as FileSystem from 'expo-file-system';
 
@@ -28,7 +29,15 @@ export const setAppTheme = () => {
                 type: TOGGLE_THEME,
                 payload: themeObj.isDark
             })
+            dispatch(setLoading(false));
         }
+    }
+}
+
+export const setLoading = (bool) => {
+    return {
+        type: SET_LOADING,
+        payload: bool
     }
 }
 
