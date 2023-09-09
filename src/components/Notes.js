@@ -194,7 +194,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
         paddingHorizontal: 10,
         borderRadius: 5,
-        marginBottom: 10,
+        paddingBottom: 10,
+        marginBottom: 15,
         textAlignVertical: 'top',
         maxHeight: screenHeight * .6
     },

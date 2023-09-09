@@ -22,13 +22,13 @@ export default ActionsModal = (props) => {
     const cancelHandler = props.cancelHandler;
 
     async function copyToClipboard(text) {
+        cancelHandler();
         try {
             await Clipboard.setStringAsync(text);;
             dispatch(showNotification({message: 'Text copied to clipboard', type:'successType'}));
         } catch (error) {
             console.error('Error copying text to clipboard: ', error.message);
         }
-        cancelHandler();
     }
 
     return (

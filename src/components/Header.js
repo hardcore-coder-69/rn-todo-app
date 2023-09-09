@@ -1,33 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
-import { MaterialIcons } from '@expo/vector-icons';
-import { useDispatch, useSelector } from "react-redux";
-
-import { toggleTheme } from "../store/actions/common";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useSelector, useDispatch } from "react-redux";
 import { getThemeColors } from "../utils/Helper";
+import HeaderModal from "./HeaderModal";
+import { toggleTheme } from "../store/actions/common";
 
 export default Header = () => {
-    const selectedTab = useSelector(state => state.common.selectedTab);
     const isDark = useSelector(state => state.common.isDark);
-    const dispatch = useDispatch();
+    const selectedTab = useSelector(state => state.common.selectedTab);
+    const [isVisible, setIsVisible] = useState(false);
     const ThemeColors = getThemeColors();
+    const dispatch = useDispatch();
+
+    function cancelHandler() {
+        setIsVisible(false);
+    }
 
     return (
-        <View style={[{borderColor: ThemeColors.borderColor}, styles.container]}>
-            <View>
+        <View style={[{ borderColor: ThemeColors.borderColor }, styles.container]}>
+            <View style={styles.titleLogo}>
+                <TouchableOpacity activeOpacity={0.5} onPress={() => setIsVisible(true)} >
+                    <Image source={require('../../assets/hardcore-logo.png')} style={styles.logoImage} />
+                </TouchableOpacity>
                 <Text style={[{ color: ThemeColors.textColor }, styles.heading]}>YOUR {selectedTab.toUpperCase()}</Text>
-                <View style={styles.copyright}>
-                    <Image source={require('../../assets/icon.png')} style={styles.logoImage} />
-                    <Text style={[{ color: ThemeColors.textColor }, styles.copyrightText]}>hardcore coder</Text>
-                </View>
+
             </View>
-            <TouchableOpacity activeOpacity={0.5}  onPress={() => dispatch(toggleTheme({ isDark: !isDark }))}>
+            <TouchableOpacity activeOpacity={0.5} style={styles.modalButtonToggle} onPress={() => dispatch(toggleTheme({ isDark: !isDark }))}>
                 {
                     isDark ?
-                        <MaterialIcons name="toggle-on" size={62} color={ThemeColors.textColor} /> :
-                        <MaterialIcons name="toggle-off" size={62} color={ThemeColors.textColor} />
+                        <MaterialCommunityIcons name="toggle-switch" size={42} color={ThemeColors.textColor} /> :
+                        <MaterialCommunityIcons name="toggle-switch-off" size={42} color={ThemeColors.textColor} />
                 }
             </TouchableOpacity>
+
+            <HeaderModal
+                isVisible={isVisible}
+                cancelHandler={cancelHandler}
+            />
         </View>
     );
 }
@@ -37,26 +47,36 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: "center",
-        paddingHorizontal: 20,
+        paddingLeft: 15,
+        paddingRight: 12,
         paddingBottom: 10,
         paddingTop: 35,
         borderWidth: 1
     },
+    titleLogo: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    toggleButton: {
+    },
     heading: {
-        fontSize: 25
+        fontSize: 25,
     },
     copyright: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        opacity: 0.5
     },
     logoImage: {
-        height: 25,
-        width: 25,
+        height: 35,
+        width: 35,
+        marginRight: 5,
     },
     copyrightText: {
         fontSize: 12
+    },
+    externalIcons: {
+        marginLeft: 5
     }
 })

@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         paddingHorizontal: 20,
         paddingVertical: 4.5,
-        borderRadius: 50,
+        borderRadius: 40,
         position: 'absolute',
     },
     message: {
