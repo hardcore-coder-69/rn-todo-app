@@ -1,2 +1,2 @@
-# rn-hardcore-app
+# rn-todo-app
 A Hardcore App

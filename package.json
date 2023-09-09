@@ -1,5 +1,5 @@
 {
-  "name": "rn-hardcore-app",
+  "name": "rn-todo-app",
   "version": "1.3.2",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
