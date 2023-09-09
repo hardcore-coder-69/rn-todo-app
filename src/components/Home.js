@@ -46,7 +46,6 @@ export default Home = () => {
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: 15,
         paddingTop: 10,
     },
 })

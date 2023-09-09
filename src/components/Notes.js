@@ -122,22 +122,24 @@ export default Notes = () => {
 
     return (
         <View style={styles.container}>
-            <TextInput
-                value={note}
-                style={[{ borderColor: ThemeColors.backgroundColor, color: ThemeColors.textColor, backgroundColor: ThemeColors.inputBackgroundColor }, styles.input]}
-                placeholder="Add new note..."
-                multiline
-                numberOfLines={4}
-                placeholderTextColor={ThemeColors.greyColor}
-                onChangeText={(value) => setNote(value)}
-            />
-            <TouchableOpacity
-                style={[{ borderColor: note ? ThemeColors.enabledButton : ThemeColors.disabledButon }, styles.button]}
-                onPress={saveNoteHandler}
-                activeOpacity={note ? 0.5 : 1}
-            >
-                <MaterialIcons name="add" size={62} color={note ? ThemeColors.enabledButton : ThemeColors.disabledButon} />
-            </TouchableOpacity>
+            <View style={[{ backgroundColor: ThemeColors.taskBackgroundColor }, styles.inputContainer]}>
+                <TextInput
+                    value={note}
+                    style={[{ borderColor: ThemeColors.borderColor, color: ThemeColors.textColor, backgroundColor: ThemeColors.inputBackgroundColor }, styles.input]}
+                    placeholder="Add new note..."
+                    multiline
+                    numberOfLines={4}
+                    placeholderTextColor={ThemeColors.greyColor}
+                    onChangeText={(value) => setNote(value)}
+                />
+                <TouchableOpacity
+                    style={[{ borderColor: note ? ThemeColors.enabledButton : ThemeColors.disabledButon }, styles.button]}
+                    onPress={saveNoteHandler}
+                    activeOpacity={note ? 0.5 : 1}
+                >
+                    <MaterialIcons name="add" size={62} color={note ? ThemeColors.enabledButton : ThemeColors.disabledButon} />
+                </TouchableOpacity>
+            </View>
             {
                 notes.length === 0 ? <Text style={[{ borderColor: ThemeColors.backgroundColor, color: ThemeColors.greyColor, backgroundColor: ThemeColors.inputBackgroundColor }, styles.noNotes]}>No saved notes</Text> : ''
             }
@@ -162,6 +164,7 @@ export default Notes = () => {
             <ActionsModal
                 isVisible={isVisible}
                 id={itemId}
+                text={itemText}
                 completed="false"
                 markCompleteHandler="null"
                 editHandler={editNote}
@@ -183,11 +186,13 @@ const styles = StyleSheet.create({
     container: {
         paddingBottom: 65
     },
+    inputContainer: {
+        paddingHorizontal: 10,
+        paddingVertical: 15
+    },
     input: {
         fontSize: 20,
-        borderWidth: 1,
         paddingHorizontal: 10,
-        paddingVertical: 15,
         borderRadius: 5,
         marginBottom: 10,
         textAlignVertical: 'top',
@@ -207,16 +212,17 @@ const styles = StyleSheet.create({
         borderWidth: 1
     },
     deleteButton: {
-        padding: 5,
+        paddingVertical: 5,
+        paddingLeft: 10
     },
     taskStyle: {
         paddingVertical: 5,
         marginTop: 10,
         borderRadius: 5,
         display: 'flex',
-        // alignItems: "center",
         justifyContent: 'start',
         flexDirection: 'row',
+        paddingHorizontal: 10
     },
     taskTextContainer: {
         width: '90%',

@@ -145,21 +145,23 @@ export default Tasks = () => {
 
     return (
         <View style={styles.container}>
-            <TextInput
-                value={task}
-                style={[{ borderColor: ThemeColors.backgroundColor, color: ThemeColors.textColor, backgroundColor: ThemeColors.inputBackgroundColor }, styles.input]}
-                multiline
-                placeholder="Add new task..."
-                placeholderTextColor={ThemeColors.greyColor}
-                onChangeText={(value) => setTask(value)}
-            />
-            <TouchableOpacity
-                activeOpacity={task ? 0.5 : 1}
-                style={[{ borderColor: task ? ThemeColors.enabledButton : ThemeColors.disabledButon }, styles.button]}
-                onPress={addTaskHandler}
-            >
-                <MaterialIcons name="add" size={62} color={task ? ThemeColors.enabledButton : ThemeColors.disabledButon} />
-            </TouchableOpacity>
+            <View style={[{ backgroundColor: ThemeColors.taskBackgroundColor }, styles.inputContainer]}>
+                <TextInput
+                    value={task}
+                    style={[{ borderColor: ThemeColors.borderColor, color: ThemeColors.textColor, backgroundColor: ThemeColors.inputBackgroundColor }, styles.input]}
+                    multiline
+                    placeholder="Add new task..."
+                    placeholderTextColor={ThemeColors.greyColor}
+                    onChangeText={(value) => setTask(value)}
+                />
+                <TouchableOpacity
+                    activeOpacity={task ? 0.5 : 1}
+                    style={[{ borderColor: task ? ThemeColors.enabledButton : ThemeColors.disabledButon }, styles.button]}
+                    onPress={addTaskHandler}
+                >
+                    <MaterialIcons name="add" size={62} color={task ? ThemeColors.enabledButton : ThemeColors.disabledButon} />
+                </TouchableOpacity>
+            </View>
             {
                 taskList.length === 0 ? <Text style={[{ borderColor: ThemeColors.backgroundColor, color: ThemeColors.greyColor, backgroundColor: ThemeColors.inputBackgroundColor }, styles.noTasks]}>No pending tasks</Text> : ''
             }
@@ -180,6 +182,7 @@ export default Tasks = () => {
             <ActionsModal
                 isVisible={isVisible}
                 id={itemId}
+                text={itemText}
                 completed={completed}
                 editHandler={editTask}
                 markCompleteHandler={toggleCompleted}
@@ -199,13 +202,16 @@ export default Tasks = () => {
 
 const styles = StyleSheet.create({
     container: {
-        paddingBottom: 65
+        paddingBottom: 65,
+    },
+    inputContainer: {
+        paddingHorizontal: 10,
+        paddingVertical: 15
     },
     input: {
         fontSize: 20,
-        borderWidth: 1,
         paddingHorizontal: 10,
-        paddingVertical: 15,
+        paddingBottom: 10,
         borderRadius: 5,
         marginBottom: 10,
         textAlignVertical: 'top',
@@ -221,16 +227,17 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     deleteButton: {
-        padding: 5,
+        paddingVertical: 5,
+        paddingLeft: 10
     },
     taskStyle: {
         paddingVertical: 5,
         marginTop: 10,
         borderRadius: 5,
         display: 'flex',
-        // alignItems: "center",
         justifyContent: 'start',
         flexDirection: 'row',
+        paddingHorizontal: 10,
     },
     taskTextContainer: {
         width: '90%',

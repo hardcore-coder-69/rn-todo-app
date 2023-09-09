@@ -1,21 +1,35 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import * as Clipboard from 'expo-clipboard';
 import Modal from 'react-native-modal';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { getThemeColors } from '../../utils/Helper';
+import { showNotification } from '../../store/actions/common';
 
 export default ActionsModal = (props) => {
+    const dispatch = useDispatch();
     const selectedTab = useSelector(state => state.common.selectedTab);
     const ThemeColors = getThemeColors();
 
     const isVisible = props.isVisible;
     const id = props.id;
+    const text = props.text;
     const completed = props.completed;
     const editHandler = props.editHandler;
     const markCompleteHandler = props.markCompleteHandler;
     const deleteHandler = props.deleteHandler;
     const cancelHandler = props.cancelHandler;
+
+    async function copyToClipboard(text) {
+        try {
+            await Clipboard.setStringAsync(text);;
+            dispatch(showNotification({message: 'Text copied to clipboard', type:'successType'}));
+        } catch (error) {
+            console.error('Error copying text to clipboard: ', error.message);
+        }
+        cancelHandler();
+    }
 
     return (
         <Modal
@@ -35,23 +49,28 @@ export default ActionsModal = (props) => {
                 </View>
 
                 <View style={styles.action}>
+                    <TouchableOpacity activeOpacity={0.5} onPress={() => copyToClipboard(text)} style={[styles.modalButton]}>
+                        <MaterialIcons name="content-copy" size={28} style={[{ color: ThemeColors.textColor }, styles.modalButtonIcon]} />
+                        <Text style={[{ color: ThemeColors.textColor }, styles.modalButtonText]}>Copy text</Text>
+                    </TouchableOpacity>
+
                     <TouchableOpacity activeOpacity={0.5} onPress={() => editHandler()} style={[styles.modalButton]}>
-                        <MaterialIcons name="edit" size={28} style={[{color: ThemeColors.textColor}, styles.modalButtonIcon]} />
-                        <Text style={[{color: ThemeColors.textColor}, styles.modalButtonText]}>Edit {selectedTab.slice(0, -1)}</Text>
+                        <MaterialIcons name="edit" size={28} style={[{ color: ThemeColors.textColor }, styles.modalButtonIcon]} />
+                        <Text style={[{ color: ThemeColors.textColor }, styles.modalButtonText]}>Edit {selectedTab.slice(0, -1)}</Text>
                     </TouchableOpacity>
 
                     {
                         selectedTab == 'tasks' ?
                             <TouchableOpacity activeOpacity={0.5} onPress={() => markCompleteHandler(id)} style={[styles.modalButton]}>
-                                <MaterialIcons name="check" size={28} style={[{color: ThemeColors.textColor}, styles.modalButtonIcon]} />
-                                <Text style={[{color: ThemeColors.textColor}, styles.modalButtonText]}>Mark as { completed ? 'pending' : 'complete' }</Text>
+                                <MaterialIcons name="check" size={28} style={[{ color: ThemeColors.textColor }, styles.modalButtonIcon]} />
+                                <Text style={[{ color: ThemeColors.textColor }, styles.modalButtonText]}>Mark as {completed ? 'pending' : 'complete'}</Text>
                             </TouchableOpacity>
                             : null
                     }
 
                     <TouchableOpacity activeOpacity={0.5} onPress={() => deleteHandler(id)} style={[styles.modalButton]}>
-                        <MaterialIcons name="delete" size={28} style={[{color: ThemeColors.textColor}, styles.modalButtonIcon]} />
-                        <Text style={[{color: ThemeColors.textColor}, styles.modalButtonText]}>Delete {selectedTab.slice(0, -1)}</Text>
+                        <MaterialIcons name="delete" size={28} style={[{ color: ThemeColors.textColor }, styles.modalButtonIcon]} />
+                        <Text style={[{ color: ThemeColors.textColor }, styles.modalButtonText]}>Delete {selectedTab.slice(0, -1)}</Text>
                     </TouchableOpacity>
 
                 </View>

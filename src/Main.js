@@ -26,7 +26,7 @@ export default function Main() {
     if (isLoading) {
         return (
             <View style={styles.ActivityIndicator}>
-                <ActivityIndicator size="48" color="#fff" />
+                <ActivityIndicator size="62" color="grey" />
             </View>
         )
     }
@@ -62,6 +62,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#000'
+        backgroundColor: '#fff'
     }
 });

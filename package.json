@@ -10,9 +10,10 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/html-elements": "^0.5.1",
     "@expo/vector-icons": "^13.0.0",
-    "@react-native-community/push-notification-ios": "^1.10.1",
     "expo": "~49.0.8",
+    "expo-clipboard": "~4.3.1",
     "expo-dev-client": "^2.4.8",
     "expo-file-system": "~15.4.3",
     "expo-status-bar": "~1.6.0",
@@ -21,11 +22,11 @@
     "react-native": "0.72.4",
     "react-native-gesture-handler": "^2.12.1",
     "react-native-modal": "^13.0.1",
-    "react-native-push-notification": "^8.1.1",
     "react-native-web": "^0.19.7",
     "react-redux": "^8.1.2",
     "redux": "^4.2.1",
-    "redux-thunk": "^2.4.2"
+    "redux-thunk": "^2.4.2",
+    "expo-linking": "~5.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
