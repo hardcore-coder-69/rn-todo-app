@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Hardcore",
-    "slug": "rn-todo-app",
+    "slug": "rn-hardcore-app",
     "version": "1.2.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
