@@ -184,7 +184,7 @@ export default Notes = () => {
 
 const styles = StyleSheet.create({
     container: {
-        paddingBottom: 65
+        paddingBottom: 58
     },
     inputContainer: {
         paddingHorizontal: 10,
@@ -218,8 +218,7 @@ const styles = StyleSheet.create({
     },
     taskStyle: {
         paddingVertical: 5,
-        marginTop: 10,
-        borderRadius: 5,
+        marginTop: 5,
         display: 'flex',
         justifyContent: 'start',
         flexDirection: 'row',

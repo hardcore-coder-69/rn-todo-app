@@ -49,8 +49,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingLeft: 15,
         paddingRight: 12,
-        paddingBottom: 10,
-        paddingTop: 35,
+        paddingBottom: 5,
+        paddingTop: 30,
         borderWidth: 1
     },
     titleLogo: {
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     toggleButton: {
     },
     heading: {
-        fontSize: 25,
+        fontSize: 22,
     },
     copyright: {
         display: 'flex',
