@@ -31,6 +31,17 @@ export const setAppTheme = () => {
             })
             dispatch(setLoading(false));
         }
+
+        const fileInfo2 = await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'last_quote_page.json');
+        if (fileInfo2.exists) {
+            const fileContents = await FileSystem.readAsStringAsync(fileInfo2.uri);
+            let pageObject = JSON.parse(fileContents);
+            dispatch({
+                type: 'SET_LAST_QUOTE_PAGE', 
+                payload: pageObject.pageNumber
+            })
+            dispatch(setLoading(false));
+        }
     }
 }
 

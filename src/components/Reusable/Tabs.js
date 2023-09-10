@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         borderRadius: 6
     },
     pressable: {
-        width: '50%',
+        width: '33.33%',
         // Show like buttons
         // borderRadius: 5,
         paddingVertical: 10,

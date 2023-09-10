@@ -6,13 +6,15 @@ import { Provider } from 'react-redux';
 import common from './src/store/reducers/common';
 import todos from './src/store/reducers/todos';
 import notes from './src/store/reducers/notes';
+import quotes from './src/store/reducers/quotes';
 import Main from './src/Main';
 
 // Combine reducers
 const rootReducer = combineReducers({
   common: common,
   todos: todos,
-  notes: notes
+  notes: notes,
+  quotes: quotes
 });
 
 const store = legacy_createStore(rootReducer, applyMiddleware(thunk));

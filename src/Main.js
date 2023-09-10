@@ -10,7 +10,7 @@ import { getThemeColors } from "./utils/Helper";
 import { setAppTheme, setLoading } from "./store/actions/common";
 import Notification from "./components/Reusable/Notification";
 import Tabs from "./components/Reusable/Tabs";
-const TabOptions = [{ key: 'tasks', text: 'Tasks' }, { key: 'notes', text: 'Notes' }];
+const TabOptions = [{ key: 'tasks', text: 'Tasks' }, { key: 'notes', text: 'Notes' }, { key: 'quotes', text: 'Quotes' }];
 
 export default function Main() {
     const isLoading = useSelector(state => state.common.isLoading);

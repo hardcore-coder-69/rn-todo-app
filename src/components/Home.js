@@ -5,6 +5,7 @@ import { GestureHandlerRootView, PanGestureHandler } from 'react-native-gesture-
 import { setSavedTab, switchTabs } from "../store/actions/common";
 import Tasks from "./Tasks";
 import Notes from "./Notes";
+import Quotes from "./Quotes";
 
 export default Home = () => {
     const dispatch = useDispatch();
@@ -16,10 +17,12 @@ export default Home = () => {
 
     let selectedTabComponent;
     if (selectedTab == 'tasks') {
-        selectedTabComponent = <Tasks />
+        selectedTabComponent = <Tasks />;
     }
     else if (selectedTab == 'notes') {
-        selectedTabComponent = <Notes />
+        selectedTabComponent = <Notes />;
+    } else if (selectedTab == 'quotes') {
+        selectedTabComponent = <Quotes />;
     }
 
     const handleSwipe = (event) => {

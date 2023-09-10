@@ -23,7 +23,7 @@ export default Header = () => {
                 <TouchableOpacity activeOpacity={0.5} onPress={() => setIsVisible(true)} >
                     <Image source={require('../../assets/hardcore-logo.png')} style={styles.logoImage} />
                 </TouchableOpacity>
-                <Text style={[{ color: ThemeColors.textColor }, styles.heading]}>YOUR {selectedTab.toUpperCase()}</Text>
+                <Text style={[{ color: ThemeColors.textColor }, styles.heading]}>{selectedTab.toUpperCase()}</Text>
 
             </View>
             <TouchableOpacity activeOpacity={0.5} style={styles.modalButtonToggle} onPress={() => dispatch(toggleTheme({ isDark: !isDark }))}>
