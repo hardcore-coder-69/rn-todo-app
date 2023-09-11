@@ -10,15 +10,16 @@ export const fetchQuotes = (pageNumber = 0) => {
 
         const options = {
             method: 'POST',
-            url: 'https://quotel-quotes.p.rapidapi.com/quotes/list',
+            url: 'https://quotel-quotes.p.rapidapi.com/topic',
             headers: {
                 'content-type': 'application/json',
                 'X-RapidAPI-Key': '577bb29bbamshe066511c2502220p18b019jsn453b91b7555d',
                 'X-RapidAPI-Host': 'quotel-quotes.p.rapidapi.com'
             },
             data: {
-                pageSize: 25,
-                page: pageNumber
+                pageSize: 10,
+                page: pageNumber,
+                topic: "motivational"
             }
         };
 

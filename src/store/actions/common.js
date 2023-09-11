@@ -37,7 +37,7 @@ export const setAppTheme = () => {
             const fileContents = await FileSystem.readAsStringAsync(fileInfo2.uri);
             let pageObject = JSON.parse(fileContents);
             dispatch({
-                type: 'SET_LAST_QUOTE_PAGE', 
+                type: 'SET_LAST_QUOTE_PAGE',
                 payload: pageObject.pageNumber
             })
             dispatch(setLoading(false));
@@ -79,15 +79,20 @@ export const switchTabs = (key) => {
 
 export const setSavedTab = () => {
     return async (dispatch) => {
-        const fileInfo = await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'last_switched_tab.json');
-        if (fileInfo.exists) {
-            const fileContents = await FileSystem.readAsStringAsync(fileInfo.uri);
-            let lastSwitchedTab = JSON.parse(fileContents);
-            dispatch({
-                type: SWITCH_TAB,
-                payload: lastSwitchedTab.key
-            })
-        }
+        // const fileInfo = await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'last_switched_tab.json');
+        // if (fileInfo.exists) {
+        //     const fileContents = await FileSystem.readAsStringAsync(fileInfo.uri);
+        //     let lastSwitchedTab = JSON.parse(fileContents);
+        // dispatch({
+        //     type: SWITCH_TAB,
+        //     payload: lastSwitchedTab.key
+        // })
+        // }
+
+        dispatch({
+            type: SWITCH_TAB,
+            payload: 'tasks'
+        })
     }
 }
 

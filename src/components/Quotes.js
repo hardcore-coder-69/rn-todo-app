@@ -47,20 +47,20 @@ export default Quotes = () => {
         <View style={styles.container}>
             {quotes && quotes.length > 0 &&
                 quotes.map((quote, index) => (
-                    <View key={index} style={[{ backgroundColor: ThemeColors.taskBackgroundColor }, styles.quotesContainer]}>
+                    <TouchableOpacity activeOpacity={0.5} key={index} style={[{ backgroundColor: ThemeColors.taskBackgroundColor }, styles.quotesContainer]}>
                         <Text style={[{ color: ThemeColors.textColor }, styles.quote]}>{quote.quote}</Text>
                         <Text style={[{ color: ThemeColors.greyColor }, styles.name]}>- {`${quote.name} (${quote.profession})`}</Text>
-                    </View>
+                    </TouchableOpacity>
                 ))
             }
             {quotes && quotes.length > 0 &&
                 <View style={[{ borderColor: ThemeColors.borderColor, backgroundColor: ThemeColors.taskBackgroundColor }, styles.actionsContainer]}>
-                    <TouchableOpacity onPress={() => loadPrevious()} style={styles.prevContainer}>
+                    <TouchableOpacity activeOpacity={0.5} onPress={() => loadPrevious()} style={styles.prevContainer}>
                         <MaterialIcons name="skip-previous" size={30} color={ThemeColors.textColor} />
                         <Text style={[{ color: ThemeColors.textColor }, styles.prevNextText]}>Prev</Text>
                     </TouchableOpacity>
                     <Text style={[{ color: ThemeColors.textColor }, styles.pageNumber]}>Page {pageNumber}</Text>
-                    <TouchableOpacity onPress={() => loadNext()} style={styles.nextContainer}>
+                    <TouchableOpacity activeOpacity={0.5} onPress={() => loadNext()} style={styles.nextContainer}>
                         <Text style={[{ color: ThemeColors.textColor }, styles.prevNextText]}>Next</Text>
                         <MaterialIcons name="skip-next" size={30} color={ThemeColors.textColor} />
                     </TouchableOpacity>
