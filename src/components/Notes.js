@@ -114,8 +114,8 @@ export default Notes = () => {
         const modalData = {
             title: 'Note',
             message: note,
-            cancelLabel: 'Close',
-            noSaveHandler: true
+            noSaveHandler: true,
+            isVisible: true
         }
         dispatch(toggleModal(modalData));
     }

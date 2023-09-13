@@ -14,11 +14,17 @@ export default CustomModal = () => {
 
     function confirm(data = null) {
         console.log('Confirmation method not provided. Data:', data);
-        dispatch(toggleModal());
+        let modal = {
+            isVisible: false
+        }
+        dispatch(toggleModal(modal));
     }
 
     function cancel() {
-        dispatch(toggleModal());
+        let modal = {
+            isVisible: false
+        }
+        dispatch(toggleModal(modal));
     }
 
     const confirmHandlerFunction = modal.confirmHandler ? modal.confirmHandler : confirm;

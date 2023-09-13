@@ -45,7 +45,7 @@ export default (state = initialState, action) => {
                     ...state.modal,
                     isVisible: !state.modal.isVisible,
                     title: payload ? payload.title : null,
-                    message: payload && payload.message ? action.payload.message : 'Alert message',
+                    message: payload && payload.message ? payload.message : 'Alert message',
                     confirmHandler: payload && payload.confirmHandler ? payload.confirmHandler : null,
                     confirmParameters: payload && payload.confirmParameters ? payload.confirmParameters : null,
                     cancelLabel: payload && payload.cancelLabel ? payload.cancelLabel : 'Cancel',
