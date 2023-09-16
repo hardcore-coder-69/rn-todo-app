@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Dimensions } from "react-native";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Dimensions, Pressable } from "react-native";
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from "react-redux";
 
-import { getThemeColors, formateDate } from "../utils/Helper";
+import { getThemeColors, formateDate, formateDateOnly, getNumberOfDays } from "../utils/Helper";
 import { fetchTodos, saveTodos } from "../store/actions/todos";
 import { showNotification, toggleModal } from "../store/actions/common";
 import ActionsModal from "./Reusable/ActionsModal";
 import EditModal from "./Reusable/EditModal";
+import DateComponent from "./Reusable/DateComponent";
 
 const screenHeight = Dimensions.get('window').height;
 export default Tasks = () => {
@@ -21,6 +22,10 @@ export default Tasks = () => {
     let [itemText, setItemText] = useState(task);
     let [isVisible, setIsVisible] = useState(false);
     let [showEditModal, setShowEditModal] = useState(false);
+    let [datePicker, setDatePicker] = useState(false);
+    let [scheduledAt, setScheduledAt] = useState();
+    let [currentShow, setCurrentShow] = useState(new Date());
+    let [calendarViewMode, setCalendarViewMode] = useState(false);
 
     useEffect(() => {
         dispatch(fetchTodos());
@@ -46,10 +51,12 @@ export default Tasks = () => {
             text: task,
             completed: false,
             createdAt: time,
-            updatedAt: time
+            updatedAt: time,
+            scheduledAt: scheduledAt ? scheduledAt : null
         }
         taskList.unshift(obj);
         setTask('');
+        setScheduledAt('');
         dispatch(saveTodos(taskList));
         dispatch(showNotification({
             message: 'New task added',
@@ -143,6 +150,31 @@ export default Tasks = () => {
         }))
     }
 
+    function showScheduleCalendar() {
+        setDatePicker(true);
+    }
+
+    function dateChangeHandler(selectedDate) {
+        setDatePicker(false);
+        if (calendarViewMode) {
+            setCalendarViewMode(false);
+            return;
+        }
+        setScheduledAt(selectedDate);
+        setCalendarViewMode(false);
+    }
+
+    function showCalendarWithDate(task) {
+        if (task.completed) return;
+        setCalendarViewMode(true);
+        setCurrentShow(new Date(task.scheduledAt));
+        setDatePicker(true);
+    }
+
+    function clearScheduledAt() {
+        setScheduledAt(null);
+    }
+
     return (
         <View style={styles.container}>
             <View style={[{ backgroundColor: ThemeColors.taskBackgroundColor }, styles.inputContainer]}>
@@ -154,6 +186,29 @@ export default Tasks = () => {
                     placeholderTextColor={ThemeColors.greyColor}
                     onChangeText={(value) => setTask(value)}
                 />
+
+                {
+                    task &&
+                    <TouchableOpacity
+                        activeOpacity={0.5}
+                        style={[{ borderColor: ThemeColors.borderColor }, styles.calenderButton]}
+                        onPress={showScheduleCalendar}
+                    >
+                        <View style={styles.calenderView}>
+                            <MaterialCommunityIcons name="calendar" size={24} color={ThemeColors.textColor} />
+                            {
+                                scheduledAt ?
+                                    <Text style={[{ color: ThemeColors.textColor }, styles.scheduledAtText]}>{formateDateOnly(scheduledAt)}</Text>
+                                    :
+                                    <Text style={[{ color: ThemeColors.textColor }, styles.scheduledAtText]}>Schedule At</Text>
+                            }
+                        </View>
+                        <TouchableOpacity onPress={clearScheduledAt} >
+                            <MaterialCommunityIcons name="close" size={28} color={ThemeColors.textColor}/>
+                        </TouchableOpacity>
+                    </TouchableOpacity>
+                }
+
                 <TouchableOpacity
                     activeOpacity={task ? 0.5 : 1}
                     style={[{ borderColor: task ? ThemeColors.enabledButton : ThemeColors.disabledButon }, styles.button]}
@@ -170,6 +225,12 @@ export default Tasks = () => {
                     <TouchableOpacity activeOpacity={0.5} key={task.id} style={[{ backgroundColor: ThemeColors.taskBackgroundColor }, styles.taskStyle]} onPress={() => toggleCompleted(task.id)}>
                         <View style={[styles.taskTextContainer, task.completed ? styles.taskContainerCompleted : null]}>
                             <Text style={[{ color: ThemeColors.textColor }, styles.taskText, task.completed ? styles.taskTextCompleted : null]}>{task.text}</Text>
+                            {
+                                task.scheduledAt &&
+                                <TouchableOpacity activeOpacity={task.completed ? 1 : 0.5} onPress={() => showCalendarWithDate(task)}>
+                                    <Text style={[{ color: ThemeColors.textColor, backgroundColor: getNumberOfDays(task.scheduledAt) >= 0 ? ThemeColors.backgroundColor : ThemeColors.borderColor }, styles.scheduledAt]}>{getNumberOfDays(task.scheduledAt) >= 0 ? getNumberOfDays(task.scheduledAt) + ' days left' : 'Overdue'}</Text>
+                                </TouchableOpacity>
+                            }
                             <Text style={[{ color: ThemeColors.createdAtColor }, styles.createdAt]}>{formateDate(task.updatedAt)}</Text>
                         </View>
 
@@ -196,6 +257,14 @@ export default Tasks = () => {
                 cancelHandler={cancelHandler}
                 saveHandler={saveEditedTask}
             />
+
+            {
+                datePicker &&
+                <DateComponent
+                    currentDate={currentShow}
+                    onChangeHandler={dateChangeHandler}
+                />
+            }
         </View>
     );
 }
@@ -221,6 +290,28 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderWidth: 2,
         borderRadius: 5
+    },
+    calenderButton: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: "center",
+        justifyContent: 'space-between',
+        borderWidth: 2,
+        borderRadius: 5,
+        paddingVertical: 5,
+        marginBottom: 10,
+        borderRadius: 100,
+        paddingHorizontal: 20
+    },
+    calenderView: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: "center",
+        justifyContent: 'center',
+    },
+    scheduledAtText: {
+        fontSize: 20,
+        marginLeft: 10
     },
     buttonText: {
         fontSize: 20,
@@ -264,5 +355,12 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginTop: 10,
         borderWidth: 1
+    },
+    scheduledAt: {
+        marginTop: 10,
+        marginBottom: 5,
+        paddingVertical: 8,
+        textAlign: 'center',
+        borderRadius: 35
     }
 })
