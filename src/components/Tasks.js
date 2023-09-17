@@ -200,7 +200,7 @@ export default Tasks = () => {
                                 scheduledAt ?
                                     <Text style={[{ color: ThemeColors.textColor }, styles.scheduledAtText]}>{formateDateOnly(scheduledAt)}</Text>
                                     :
-                                    <Text style={[{ color: ThemeColors.textColor }, styles.scheduledAtText]}>Schedule At</Text>
+                                    <Text style={[{ color: ThemeColors.textColor }, styles.scheduledAtText]}>Schedule task</Text>
                             }
                         </View>
                         <TouchableOpacity onPress={clearScheduledAt} >

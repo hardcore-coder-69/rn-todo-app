@@ -38,6 +38,6 @@ export function getNumberOfDays(date) {
     const currentDate = new Date();
     const targetDate = new Date(date);
     const timeDifference = targetDate - currentDate;
-    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24)) + 1;
+    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
     return daysDifference;
 }
