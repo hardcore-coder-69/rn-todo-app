@@ -37,6 +37,8 @@ export function formateDateOnly(date) {
 export function getNumberOfDays(date) {
     const currentDate = new Date();
     const targetDate = new Date(date);
+    currentDate.setHours(0, 0, 0, 0);
+    targetDate.setHours(0, 0, 0, 0);
     const timeDifference = targetDate - currentDate;
     const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
     return daysDifference;
