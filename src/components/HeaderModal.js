@@ -41,14 +41,14 @@ export default HeaderModal = ({ isVisible, cancelHandler }) => {
                         </View>
                     </A>
 
-                    <A href="https://twitter.com/" style={styles.modalButton}>
+                    {/* <A href="https://twitter.com/" style={styles.modalButton}>
                         <MaterialCommunityIcons name="twitter" size={30} color={ThemeColors.textColor} />
                         <View>
                             <Text style={[{ color: ThemeColors.textColor }, styles.modalButtonText]}>Twitter</Text>
                         </View>
-                    </A>
+                    </A> */}
 
-                    <A href="https://linkedin.com/" style={styles.modalButton}>
+                    <A href="https://www.linkedin.com/in/hardcore-coder-105ab7291/" style={styles.modalButton}>
                         <MaterialCommunityIcons name="linkedin" size={30} color={ThemeColors.textColor} />
                         <View>
                             <Text style={[{ color: ThemeColors.textColor }, styles.modalButtonText]}>LinkedIn</Text>
