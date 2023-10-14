@@ -20,6 +20,7 @@ export default Notes = () => {
     let [isVisible, setIsVisible] = useState(false);
     let [showEditModal, setShowEditModal] = useState(false);
     let [itemText, setItemText] = useState(note);
+    let [longPressNoteId, setLongPressNoteId] = useState(null);
 
     useEffect(() => {
         dispatch(fetchNotes());
@@ -120,6 +121,30 @@ export default Notes = () => {
         dispatch(toggleModal(modalData));
     }
 
+    function handleLongPress(id) {
+        setLongPressNoteId(id);
+    }
+
+    function shiftObject(array, targetId, direction) {
+        const index = array.findIndex(obj => obj.id === targetId);
+        if (index === -1) return array;
+        const newIndex = direction === 'up' ? index - 1 : index + 1;
+        if (newIndex < 0 || newIndex >= array.length) return array;
+        const newArray = [...array];
+        [newArray[index], newArray[newIndex]] = [newArray[newIndex], newArray[index]];
+        return newArray;
+    }
+
+
+    function moveNote(direction) {
+        let shiftesNotes = shiftObject(notes, longPressNoteId, direction);
+        dispatch(saveNotes(shiftesNotes));
+    }
+
+    function doneMoving() {
+        setLongPressNoteId(null);
+    }
+
     return (
         <View style={styles.container}>
             <View style={[{ backgroundColor: ThemeColors.taskBackgroundColor }, styles.inputContainer]}>
@@ -146,18 +171,52 @@ export default Notes = () => {
             {
                 notes.map((note) => (
                     <TouchableOpacity
+                        onLongPress={() => handleLongPress(note.id)}
                         activeOpacity={0.5}
                         key={note.id}
                         style={[{ backgroundColor: ThemeColors.taskBackgroundColor }, styles.taskStyle]}
                         onPress={() => showFullNote(note.text)}
                     >
-                        <View style={[styles.taskTextContainer]}>
-                            <Text style={[{ color: ThemeColors.textColor }, styles.taskText]} numberOfLines={6} ellipsizeMode="tail">{note.text}</Text>
-                            <Text style={[{ color: ThemeColors.createdAtColor }, styles.createdAt]}>{formateDate(note.updatedAt)}</Text>
+                        {
+                            longPressNoteId == note.id ?
+                                <TouchableOpacity style={[{backgroundColor: ThemeColors.textColor, marginBottom: 5}, styles.moveArrow]} onPress={() => moveNote('up')}>
+                                    <MaterialIcons name="arrow-drop-up" size={62} color={ThemeColors.taskBackgroundColor} />
+                                </TouchableOpacity>
+                                : null
+                        }
+
+                        <View style={styles.noteUpperContainer}>
+                            <View style={[styles.taskTextContainer]}>
+                                <Text style={[{ color: ThemeColors.textColor }, styles.taskText]} numberOfLines={6} ellipsizeMode="tail">{note.text}</Text>
+                                <Text style={[{ color: ThemeColors.createdAtColor }, styles.createdAt]}>{formateDate(note.updatedAt)}</Text>
+                            </View>
+
+                            <View style={styles.deleteButton}>
+                                <TouchableOpacity style={{ opacity: 0.8 }} activeOpacity={0.3} onPress={() => deleteNote(note.id)}>
+                                    <MaterialCommunityIcons name="delete" size={24} color={ThemeColors.textColor} />
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{ opacity: 0.8 }} activeOpacity={0.3} onPress={() => showActions(note.id, note.text)}>
+                                    <MaterialCommunityIcons name="dots-vertical" size={28} color={ThemeColors.textColor} />
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                        <TouchableOpacity activeOpacity={0.5} style={styles.deleteButton} onPress={() => showActions(note.id, note.text)}>
-                            <MaterialCommunityIcons name="dots-vertical" size={28} color={ThemeColors.textColor} />
-                        </TouchableOpacity>
+
+
+                        {
+                            longPressNoteId == note.id ?
+                                <TouchableOpacity style={[{backgroundColor: ThemeColors.textColor, marginTop: 5}, styles.moveArrow]} onPress={() => moveNote('down')}>
+                                    <MaterialIcons name="arrow-drop-down" size={62} color={ThemeColors.taskBackgroundColor} />
+                                </TouchableOpacity>
+                                : null
+                        }
+
+                        {
+                            longPressNoteId == note.id ?
+                                <TouchableOpacity style={[{backgroundColor: ThemeColors.successType}, styles.moveArrow]} onPress={() => doneMoving()}>
+                                    <MaterialIcons name="check" size={62} color={ThemeColors.textColor} />
+                                </TouchableOpacity>
+                                : null
+                        }
                     </TouchableOpacity>
                 ))
             }
@@ -213,15 +272,19 @@ const styles = StyleSheet.create({
         borderWidth: 1
     },
     deleteButton: {
-        paddingVertical: 5,
-        paddingLeft: 10
+        paddingLeft: 10,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
     taskStyle: {
         paddingVertical: 5,
         marginTop: 5,
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'start',
-        flexDirection: 'row',
+        // flexDirection: 'row',
         paddingHorizontal: 10
     },
     taskTextContainer: {
@@ -238,4 +301,13 @@ const styles = StyleSheet.create({
         fontStyle: "italic",
         paddingTop: 5
     },
+    noteUpperContainer: {
+        display: 'flex',
+        flexDirection: 'row'
+    },
+    moveArrow: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
 })

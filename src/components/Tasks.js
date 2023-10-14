@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Dimensions, Pressable } from "react-native";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Dimensions, Pressable, TouchableWithoutFeedback } from "react-native";
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from "react-redux";
 
@@ -204,7 +204,7 @@ export default Tasks = () => {
                             }
                         </View>
                         <TouchableOpacity onPress={clearScheduledAt} >
-                            <MaterialCommunityIcons name="close" size={28} color={ThemeColors.textColor}/>
+                            <MaterialCommunityIcons name="close" size={28} color={ThemeColors.textColor} />
                         </TouchableOpacity>
                     </TouchableOpacity>
                 }
@@ -234,9 +234,14 @@ export default Tasks = () => {
                             <Text style={[{ color: ThemeColors.createdAtColor }, styles.createdAt]}>{formateDate(task.updatedAt)}</Text>
                         </View>
 
-                        <TouchableOpacity activeOpacity={0.5} style={styles.deleteButton} onPress={() => showActions(task.id, task.text, task.completed)}>
-                            <MaterialCommunityIcons name="dots-vertical" size={28} color={ThemeColors.textColor} />
-                        </TouchableOpacity>
+                        <View style={styles.deleteButton}>
+                            <TouchableOpacity style={{ opacity: 0.8 }} activeOpacity={0.3} onPress={() => deleteTask(task.id)}>
+                                <MaterialCommunityIcons name="delete" size={24} color={ThemeColors.textColor} />
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{ opacity: 0.8 }} activeOpacity={0.3} onPress={() => showActions(task.id, task.text, task.completed)}>
+                                <MaterialCommunityIcons name="dots-vertical" size={28} color={ThemeColors.textColor} />
+                            </TouchableOpacity>
+                        </View>
                     </TouchableOpacity>
                 ))
             }
@@ -318,8 +323,12 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     deleteButton: {
-        paddingVertical: 5,
-        paddingLeft: 10
+        // paddingVertical: 5,
+        paddingLeft: 10,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
     taskStyle: {
         paddingVertical: 5,
