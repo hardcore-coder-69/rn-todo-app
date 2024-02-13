@@ -1,0 +1,24 @@
+.main {
+    /* padding: 10px; */
+}
+
+.welcome-message {
+    padding: 15px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.welcome-message h2 {
+    text-align: center;
+    font-size: 32px;
+}
+
+.welcome-message p {
+    font-size: 22px;
+    padding-bottom: 40px;
+}
+
+.bg-image {
+    height: 100%;
+    width: 100%;
+}

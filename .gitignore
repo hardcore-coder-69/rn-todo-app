@@ -1,0 +1,14 @@
+# Ignore build artifacts
+build/
+dist/
+
+# Ignore dependencies
+node_modules/
+
+# Ignore IDE/Editor specific files
+.idea/
+.vscode/
+
+# Ignore OS generated files
+Thumbs.db
+.DS_Store
